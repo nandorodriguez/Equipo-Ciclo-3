@@ -5,5 +5,5 @@ Misión tic ciclo 3
 
 ### Edier Aristizábal
 * Cedula: 71765068
-* *Correo: edieraristizabal@gmail.com
+* Correo: edieraristizabal@gmail.com
 * Soy de la ciudad de Medellín, ingeniero geologo y me gustaria ser desarrollador de aplicaciones espaciales, como mapas web.
