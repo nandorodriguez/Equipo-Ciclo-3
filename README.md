@@ -15,3 +15,8 @@ Misión tic ciclo 3
 **cedula 1051676007
 **correo frodriguezdav@hotmail.com
 **Fernando Rodriguez Davila ingeniero electronico, desarrollador frontend, apasionado por la musica y el baloncesto.
+
+## Samuel Cerón
+**cedula 1002802409
+**correo est.wilder.taborda@unimilitar.edu.co
+**Ingeniero mecatronico de la ciudad de Medellin radicado en New York, desarrollador frontend en Koombea, enamorado de React, Typescript, MySQL and NodeJS
