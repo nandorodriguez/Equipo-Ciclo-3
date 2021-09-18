@@ -19,4 +19,4 @@ Misión tic ciclo 3
 ## Samuel Cerón
 * cedula 1002802409
 * correo est.wilder.taborda@unimilitar.edu.co
-* Ingeniero mecatronico de la ciudad de Medellin radicado en New York, desarrollador frontend en Koombea, enamorado de React, Typescript, MySQL and NodeJS
+* Ingeniero mecatronico de la ciudad de Medellin radicado en New York, desarrollador frontend en Koombea, enamorado de React, Typescript, MySQL and Node
