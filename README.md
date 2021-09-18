@@ -12,9 +12,9 @@ Misión tic ciclo 3
 * Soy de la ciudad de Medellín, ingeniero geologo y me gustaria ser desarrollador de aplicaciones espaciales, como mapas web.
 >>>>>>> 99f673506f51cf1ec36da455ab78f0f566312149
 ## Fernando Rodriguez
-**cedula 1051676007
-**correo frodriguezdav@hotmail.com
-**Fernando Rodriguez Davila ingeniero electronico, desarrollador frontend, apasionado por la musica y el baloncesto.
+* cedula 1051676007
+* correo frodriguezdav@hotmail.com
+* Fernando Rodriguez Davila ingeniero electronico, desarrollador frontend, apasionado por la musica y el baloncesto.
 
 ## Samuel Cerón
 * cedula 1002802409
