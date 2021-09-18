@@ -25,3 +25,8 @@ Misión tic ciclo 3
 * cedula 66778133
 * correo zuky.mazury@gmail.com
 * Soy de Palmira – Valle y vivo en Bogotá hace 13 años. Soy Ingeniera de Sistemas Especializada en Gerencia Logística y tengo 45 años.
+
+### Yilmar Garces Navia
+* cedula 1061687963
+* correo gilmar.garces@gmail.com
+* Soy de Bolivar – Cauca y vivo en guachicono bolivar cauca
