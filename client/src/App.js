@@ -1,6 +1,6 @@
 import "./App.css";
-import Login from "../components/samuel/Login";
-import Carrito from "../components/fernando/Carrito";
+import Login from "./components/samuel/Login";
+import Carrito from "./components/fernando/Carrito";
 
 function App() {
   return (
