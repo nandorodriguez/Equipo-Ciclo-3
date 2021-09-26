@@ -9,7 +9,7 @@ const Usuarios = () => {
            <TextField id="standard-basic" label="Standard" variant="standard" />
            <Button variant="outlined">Buscar</Button>
             <br />
-            <br />
+            
             <BottomNavigation
             showLabels
             value={value}
@@ -22,7 +22,6 @@ const Usuarios = () => {
             <BottomNavigationAction label="Editores" icon={<LocationOnIcon />} />
             </BottomNavigation>
         
-            <br />
             <div>
            
                 <Button variant="contained">Editar</Button>;
