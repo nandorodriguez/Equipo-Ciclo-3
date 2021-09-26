@@ -26,8 +26,9 @@ const Usuarios = () => {
            
                 <Button variant="contained">Editar</Button>;
                 <Button variant="contained">Eliminar</Button>;
-                <Button variant="contained">Ver</Button>;
                 <Button variant="contained">Cambiar Rol</Button>;
+                <Button variant="contained">Ver</Button>;
+                
             </div>
             <div>
             <FormGroup>
