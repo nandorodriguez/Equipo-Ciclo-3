@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Paper from "@mui/material/Paper";
+import GoogleIcon from "@mui/icons-material/Google";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
@@ -88,18 +89,15 @@ const Login = () => {
               >
                 Sign In
               </Button>
-              {/* <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
-              </Grid> */}
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                startIcon={<GoogleIcon />}
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Google
+              </Button>
             </Box>
           </Box>
         </Grid>
