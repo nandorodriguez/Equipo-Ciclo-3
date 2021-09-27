@@ -6,7 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Form } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { Table } from "react-bootstrap";
-import "../fernando/Producto.css";
+import "./Producto.css";
 
 const Producto = () => {
   return (
