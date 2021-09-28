@@ -16,6 +16,7 @@ import "../styles/VentasModulo.css";
 const VentasModulo = () => {
   const user = useSelector(selectUser);
   const [rows, setRows] = useState([]);
+  const [isEditing, setIsEditing] = useState({ state: false, id: "" });
   const [newProduct, setNewProduct] = useState({
     nameProduct: "",
     valueUnit: "",
@@ -49,6 +50,28 @@ const VentasModulo = () => {
       nameClient: "",
     });
   };
+  const handleUpdateProduct = () => {
+    const oldData = [...rows];
+    const newData = oldData.filter((row) => {
+      if (row.id === isEditing.id) {
+        row.nameProduct = newProduct.nameProduct;
+        row.valueUnit = newProduct.valueUnit;
+        row.quantity = newProduct.quantity;
+        row.idClient = newProduct.idClient;
+        row.nameClient = newProduct.nameClient;
+      }
+      return row;
+    });
+    setRows(newData);
+    setNewProduct({
+      nameProduct: "",
+      valueUnit: "",
+      quantity: "",
+      idClient: "",
+      nameClient: "",
+    });
+    setIsEditing({ ...isEditing, state: false, id: "" });
+  };
   const handleOnChange = (e) => {
     setNewProduct({ ...newProduct, [e.target.name]: e.target.value });
   };
@@ -58,6 +81,7 @@ const VentasModulo = () => {
     );
     const row = rows.find((row) => row.id === id);
     if (option) {
+      setIsEditing({ ...isEditing, state: true, id: id });
       setNewProduct({
         nameProduct: row.nameProduct,
         valueUnit: row.valueUnit,
@@ -107,9 +131,19 @@ const VentasModulo = () => {
           onChange={(e) => handleOnChange(e)}
           variant="standard"
         />
-        <Button variant="contained" onClick={() => handleNewProduct()}>
-          Registrar datos
-        </Button>
+        {!isEditing.state ? (
+          <Button variant="contained" onClick={() => handleNewProduct()}>
+            Registrar datos
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => handleUpdateProduct()}
+          >
+            Actualizar datos
+          </Button>
+        )}
       </div>
       <div className="ventasModulo__right">
         <TextField
