@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -6,9 +8,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { selectUser } from "../../features/userSlice";
+import { selectUser } from "../../../features/userSlice";
 import { useSelector } from "react-redux";
-import "./VentasModulo.css";
+import { v4 as uuidv4 } from "uuid";
+import "../styles/VentasModulo.css";
 
 const VentasModulo = () => {
   const user = useSelector(selectUser);
@@ -20,76 +23,106 @@ const VentasModulo = () => {
     idClient: "",
     nameClient: "",
   });
+  const [searchData, setSearchData] = useState("");
   const handleNewProduct = () => {
-    console.log({
-      ...newProduct,
-      id: rows.length + 1,
-      total: parseInt(newProduct.valueUnit) * parseInt(newProduct.quantity),
-      date: new Date(),
-      nameSeller: user.name,
-    });
+    const { nameProduct, valueUnit, quantity, idClient, nameClient } =
+      newProduct;
+    setRows([
+      {
+        nameProduct,
+        valueUnit,
+        quantity,
+        idClient,
+        nameClient,
+        id: uuidv4(),
+        total: parseInt(newProduct.valueUnit) * parseInt(newProduct.quantity),
+        date: JSON.stringify(new Date()).replace("T", ",").slice(1, 17),
+        nameSeller: user.name,
+      },
+      ...rows,
+    ]);
     setNewProduct({
-      ...newProduct,
-      id: rows.length + 1,
-      total: parseInt(newProduct.valueUnit) * parseInt(newProduct.quantity),
-      date: JSON.stringify(new Date()),
-      nameSeller: user.name,
+      nameProduct: "",
+      valueUnit: "",
+      quantity: "",
+      idClient: "",
+      nameClient: "",
     });
-    setRows([...rows, newProduct]);
   };
   const handleOnChange = (e) => {
     setNewProduct({ ...newProduct, [e.target.name]: e.target.value });
   };
-  const handleDeleteRow = (id) => {
+  const handleRow = (id) => {
+    const option = window.confirm(
+      "Ok: Editar registro \nCancel: Borrar registro"
+    );
+    const row = rows.find((row) => row.id === id);
+    if (option) {
+      setNewProduct({
+        nameProduct: row.nameProduct,
+        valueUnit: row.valueUnit,
+        quantity: row.quantity,
+        idClient: row.idClient,
+        nameClient: row.nameClient,
+      });
+    } else {
       setRows(rows.filter((row) => row.id !== id));
-  }
+    }
+  };
   return (
     <div className="ventasModulo">
       <div className="ventasModulo__left">
-        <input
+        <TextField
           name="nameProduct"
-          type="text"
           value={newProduct.nameProduct}
-          placeholder="Nombre del producto"
           onChange={(e) => handleOnChange(e)}
+          label="Nombre del producto"
+          variant="standard"
         />
-        <input
+        <TextField
           name="valueUnit"
-          type="text"
           value={newProduct.valueUnit}
-          placeholder="Valor del producto"
+          label="Valor del producto"
           onChange={(e) => handleOnChange(e)}
+          variant="standard"
         />
-        <input
+        <TextField
           name="quantity"
-          type="text"
           value={newProduct.quantity}
-          placeholder="Cantidad"
+          label="Cantidad"
           onChange={(e) => handleOnChange(e)}
+          variant="standard"
         />
-        <input
+        <TextField
           name="idClient"
-          type="text"
           value={newProduct.idClient}
-          placeholder="ID del cliente"
+          label="ID del cliente"
           onChange={(e) => handleOnChange(e)}
+          variant="standard"
         />
-        <input
+        <TextField
           name="nameClient"
-          type="text"
           value={newProduct.nameClient}
-          placeholder="Nombre del cliente"
+          label="Nombre del cliente"
           onChange={(e) => handleOnChange(e)}
+          variant="standard"
         />
-        <button onClick={() => handleNewProduct()}>Registrar datos</button>
+        <Button variant="contained" onClick={() => handleNewProduct()}>
+          Registrar datos
+        </Button>
       </div>
       <div className="ventasModulo__right">
+        <TextField
+          style={{ width: "50%", marginBottom: "10px" }}
+          type="text"
+          label="Search"
+          onChange={(e) => setSearchData(e.target.value)}
+          variant="standard"
+        />
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>
-                </TableCell>
                 <TableCell>
                   <strong>ID</strong>
                 </TableCell>
@@ -120,31 +153,26 @@ const VentasModulo = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row) => (
-                <TableRow
-                  key={row.id | 0}
-                  onClick={() =>
-                    setNewProduct({
-                      nameProduct: row.nameProduct,
-                      valueUnit: row.valueUnit,
-                      quantity: row.quantity,
-                      idClient: row.idClient,
-                      nameClient: row.nameClient,
-                    })
-                  }
-                >
-                  <button onClick={()=>handleDeleteRow()}>x</button>
-                  <TableCell>{row.id}</TableCell>
-                  <TableCell>{row.nameProduct}</TableCell>
-                  <TableCell>{row.valueUnit}</TableCell>
-                  <TableCell>{row.quantity}</TableCell>
-                  <TableCell>{row.total}</TableCell>
-                  <TableCell>{row.date}</TableCell>
-                  <TableCell>{row.idClient}</TableCell>
-                  <TableCell>{row.nameClient}</TableCell>
-                  <TableCell>{row.nameSeller}</TableCell>
-                </TableRow>
-              ))}
+              {rows
+                .filter((row) =>
+                  JSON.stringify(row)
+                    .trim()
+                    .toLowerCase()
+                    .includes(searchData.trim().toLowerCase())
+                )
+                .map((row) => (
+                  <TableRow key={row.id | 0} onClick={() => handleRow(row.id)}>
+                    <TableCell>{row.id}</TableCell>
+                    <TableCell>{row.nameProduct}</TableCell>
+                    <TableCell>{row.valueUnit}</TableCell>
+                    <TableCell>{row.quantity}</TableCell>
+                    <TableCell>{row.total}</TableCell>
+                    <TableCell>{row.date}</TableCell>
+                    <TableCell>{row.idClient}</TableCell>
+                    <TableCell>{row.nameClient}</TableCell>
+                    <TableCell>{row.nameSeller}</TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </TableContainer>

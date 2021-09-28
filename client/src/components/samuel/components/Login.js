@@ -1,9 +1,9 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import GoogleIcon from "@mui/icons-material/Google";
 import Button from "@mui/material/Button";
 import { useDispatch } from "react-redux";
-import { handleLogin } from "../../features/userSlice";
-import "./Login.css";
+import { handleLogin } from "../../../features/userSlice";
+import "../styles/Login.css";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -33,11 +33,7 @@ const Login = () => {
         variant="contained"
         color="error"
         startIcon={<GoogleIcon />}
-        onClick={() =>
-          dispatch(
-            handleLogin(users[0])
-          )
-        }
+        onClick={() => dispatch(handleLogin(users[0]))}
       >
         usuario
       </Button>
@@ -45,11 +41,7 @@ const Login = () => {
         variant="contained"
         color="error"
         startIcon={<GoogleIcon />}
-        onClick={() =>
-          dispatch(
-            handleLogin(users[1])
-          )
-        }
+        onClick={() => dispatch(handleLogin(users[1]))}
       >
         vendedor
       </Button>
@@ -57,11 +49,7 @@ const Login = () => {
         variant="contained"
         color="error"
         startIcon={<GoogleIcon />}
-        onClick={() =>
-          dispatch(
-            handleLogin(users[2])
-          )
-        }
+        onClick={() => dispatch(handleLogin(users[2]))}
       >
         admin
       </Button>

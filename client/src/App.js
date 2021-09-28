@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import Login from "./components/samuel/Login";
+import Login from "./components/samuel/components/Login";
 import Producto from "./components/fernandoZuky/Producto";
 import Usuarios from "./components/yilmar/usuarios";
-import VentasModulo from "./components/samuel/VentasModulo";
+import VentasModulo from "./components/samuel/components/VentasModulo";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser, handleLogout } from "./features/userSlice";
 
