@@ -1,21 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import Login from "./components/samuel/Login";
 import Producto from "./components/fernandoZuky/Producto";
 import Usuarios from "./components/yilmar/usuarios";
 import VentasModulo from "./components/samuel/VentasModulo";
 import { useSelector, useDispatch } from "react-redux";
-import { selectUser,handleLogin } from "./features/userSlice";
+import { selectUser, handleLogout } from "./features/userSlice";
 
 function App() {
-  return (
-    <div className="App">
-      <Login />
-      <VentasModulo />
-      <Producto />
-      <Usuarios />
-    </div>
-  );
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
+  if (user) {
+    switch (user.role) {
+      case "usuario":
+        return (
+          <>
+            <Producto />
+            <Usuarios />
+            <button onClick={() => dispatch(handleLogout)}>log out</button>
+          </>
+        );
+      case "vendedor":
+        return <VentasModulo />;
+      case "admin":
+        break;
+      default:
+        break;
+    }
+  }
+  return <Login />;
 }
 
 export default App;
