@@ -17,6 +17,7 @@ const VentasModulo = () => {
   const user = useSelector(selectUser);
   const [rows, setRows] = useState([]);
   const [isEditing, setIsEditing] = useState({ state: false, id: "" });
+
   const [newProduct, setNewProduct] = useState({
     nameProduct: "",
     valueUnit: "",
@@ -24,7 +25,9 @@ const VentasModulo = () => {
     idClient: "",
     nameClient: "",
   });
+
   const [searchData, setSearchData] = useState("");
+
   const handleNewProduct = () => {
     const { nameProduct, valueUnit, quantity, idClient, nameClient } =
       newProduct;
@@ -50,6 +53,7 @@ const VentasModulo = () => {
       nameClient: "",
     });
   };
+
   const handleUpdateProduct = () => {
     const oldData = [...rows];
     const newData = oldData.filter((row) => {
@@ -80,6 +84,9 @@ const VentasModulo = () => {
       "Ok: Editar registro \nCancel: Borrar registro"
     );
     const row = rows.find((row) => row.id === id);
+
+
+
     if (option) {
       setIsEditing({ ...isEditing, state: true, id: id });
       setNewProduct({
@@ -93,6 +100,7 @@ const VentasModulo = () => {
       setRows(rows.filter((row) => row.id !== id));
     }
   };
+
   return (
     <div className="ventasModulo">
       <div className="ventasModulo__left">

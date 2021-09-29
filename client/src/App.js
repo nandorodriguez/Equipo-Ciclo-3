@@ -16,7 +16,6 @@ function App() {
         return (
           <>
             <Producto />
-            <Usuarios />
             <button onClick={() => dispatch(handleLogout)}>log out</button>
           </>
         );
