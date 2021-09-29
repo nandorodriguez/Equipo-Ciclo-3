@@ -1,22 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-<<<<<<< HEAD
-// import { Row } from "react-bootstrap";
-// import { Col } from "react-bootstrap";
 import { Form, FormControl } from "react-bootstrap";
-=======
-import { Form } from "react-bootstrap";
->>>>>>> 1ecaa21c635a9f2e98b447ac79f99cf8e039b981
 import { Button } from "react-bootstrap";
 import { Table } from "react-bootstrap";
-
+import { useDispatch, useSelector } from "react-redux";
+import { handleUpdateProducts, selectProducts } from "../../features/productSlice";
 import "./Producto.css";
-import { useSelector, useDispatch } from "react-redux";
-import { selectProducts, handleUpdateProducts } from "../../features/productSlice";
 
 const Producto = () => {
-<<<<<<< HEAD
+  const products = useSelector(selectProducts)
+  const dispatch = useDispatch();
   const [rows, setRows] = useState([]);
   const [searchData, setSearchData] = useState("");
   const [isEditing, setIsEditing] = useState({ state: false, idProduct: "" });
@@ -26,9 +20,22 @@ const Producto = () => {
     price: "",
     status: "",
   });
+  useEffect(() => {
+    setRows(products);
+  },[products])
   const handleNewProduct = () => {
     const {idProduct, description, price, status } = newProduct;
-
+    dispatch(
+      handleUpdateProducts([
+        {
+          idProduct,
+          description,
+          price,
+          status,
+        },
+        ...rows,
+      ])
+    );
     setRows([
       {
         idProduct,
@@ -90,19 +97,6 @@ const Producto = () => {
     }
   };
 
-=======
-  const products = useSelector(selectProducts)
-  const dispatch = useDispatch();
-  const handleAddProduct = () => {
-
-  }
-  const handleEditProduct = () => {
-
-  }
-  const handleDeleteProduct = () => {
-    
-  }
->>>>>>> 1ecaa21c635a9f2e98b447ac79f99cf8e039b981
   return (
     <div>
       <Container className="box-effect">
@@ -116,18 +110,18 @@ const Producto = () => {
               placeholder="Search"
               className="col-6"
               aria-label="Search"
-              nChange={(e) => setSearchData(e.target.value)}
+              onChange={(e) => setSearchData(e.target.value)}
             />
-            <Button variant="outline-success">Search</Button>
             <Form.Group
               className="col-8 mb-4 mt-4"
               controlId="formBasicPassword"
-              onChange={(e) => handleOnChange(e)}
             >
               <Form.Control
+                value={newProduct.idProduct}
                 name="idProduct"
                 type="id"
                 placeholder="Id Product"
+                onChange={(e) => handleOnChange(e)}
               />
             </Form.Group>
 
@@ -136,53 +130,65 @@ const Producto = () => {
               controlId="description"
               onChange={(e) => handleOnChange(e)}
             >
-              <Form.Control name="description" placeholder="Description" />
+              <Form.Control
+                value={newProduct.description}
+                name="description"
+                placeholder="Description"
+                onChange={(e) => handleOnChange(e)}
+              />
             </Form.Group>
             <Form.Group
               className="col-8 mb-4 mt-4"
               controlId="price"
               onChange={(e) => handleOnChange(e)}
             >
-              <Form.Control name="price" placeholder="Price" />
+              <Form.Control
+                value={newProduct.price}
+                name="price"
+                placeholder="Price"
+                onChange={(e) => handleOnChange(e)}
+              />
             </Form.Group>
             <Form.Group
               className="col-8 mb-4 mt-4"
               controlId="status"
               onChange={(e) => handleOnChange(e)}
             >
-              <Form.Control name="status" placeholder="Status Product" />
+              <Form.Control
+                value={newProduct.status}
+                name="status"
+                placeholder="Status Product"
+                onChange={(e) => handleOnChange(e)}
+              />
             </Form.Group>
           </Form>
         </div>
         <div className="row text-center pb-4">
           <div className="col-12">
-          {!isEditing.state ? (
-          <Button
-            variant="contained"
-            className=" mb-4 mt-4 text-center"
-            variant="primary"
-            type="submit"
-            onClick={() => handleNewProduct()}
-          >
-            Upload Product
-          </Button>
-        ) : (
-          <Button
-             
-            
-            className=" mb-4 mt-4 text-center"
-            variant="secondary"
-            color="success"
-            onClick={() => handleUpdateProduct()}
-          >
-            Actualizar datos
-          </Button>
-        )}
+            {!isEditing.state ? (
+              <Button
+                className=" mb-4 mt-4 text-center"
+                variant="primary"
+                type="submit"
+                onClick={() => handleNewProduct()}
+              >
+                Upload Product
+              </Button>
+            ) : (
+              <Button
+                className=" mb-4 mt-4 text-center"
+                variant="secondary"
+                color="success"
+                onClick={() => handleUpdateProduct()}
+              >
+                Actualizar datos
+              </Button>
+            )}
           </div>
         </div>
 
         {/* tabla de registro de productos  */}
-        
+
         <div className="row d-flex justify-content-center">
           <div className="col-8">
             <Table striped bordered hover className="col-8 overflow-auto">

@@ -14,45 +14,44 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { selectUser } from "../../../features/userSlice";
 import { selectProducts } from "../../../features/productSlice";
 import { useSelector } from "react-redux";
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 
 import "../styles/VentasModulo.css";
 
-const options = [
-  "Show some love to MUI",
-  "Show all notification content",
-  "Hide sensitive notification content",
-  "Hide all notification content",
-];
+// const options = [
+//   "Show some love to MUI",
+//   "Show all notification content",
+//   "Hide sensitive notification content",
+//   "Hide all notification content",
+// ];
 
 const VentasModulo = () => {
   const user = useSelector(selectUser);
   const products = useSelector(selectProducts);
+  const [options, setOptions] = useState([]);
   const [rows, setRows] = useState([]);
   const [isEditing, setIsEditing] = useState({ state: false, id: "" });
-
   const [newProduct, setNewProduct] = useState({
-    valueUnit: "",
     quantity: "",
     idClient: "",
     nameClient: "",
   });
-
+  useEffect(() => {
+    setOptions(products);
+  },[products]);
   const [searchData, setSearchData] = useState("");
-<<<<<<< HEAD
-=======
   const [anchorEl, setAnchorEl] = useState(null);
   const [nameProduct, setNameProduct] = useState("");
+  const [valueUnit, setValueUnit] = useState(null);
+  const [idProduct, setIdProduct] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState("");
   const open = Boolean(anchorEl);
->>>>>>> 1ecaa21c635a9f2e98b447ac79f99cf8e039b981
 
   const handleNewProduct = () => {
-    const { valueUnit, quantity, idClient, nameClient } =
-      newProduct;
+    const { quantity, idClient, nameClient } = newProduct;
     setRows([
       {
         nameProduct,
@@ -60,8 +59,8 @@ const VentasModulo = () => {
         quantity,
         idClient,
         nameClient,
-        id: uuidv4(),
-        total: parseInt(newProduct.valueUnit) * parseInt(newProduct.quantity),
+        id: idProduct,
+        total: parseInt(valueUnit) * parseInt(newProduct.quantity),
         date: JSON.stringify(new Date()).replace("T", ",").slice(1, 17),
         nameSeller: user.name,
       },
@@ -70,19 +69,18 @@ const VentasModulo = () => {
     setSelectedIndex(null);
     setNameProduct("");
     setNewProduct({
-      valueUnit: "",
       quantity: "",
       idClient: "",
       nameClient: "",
     });
   };
-
   const handleUpdateProduct = () => {
     const oldData = [...rows];
     const newData = oldData.filter((row) => {
       if (row.id === isEditing.id) {
         row.nameProduct = nameProduct;
-        row.valueUnit = newProduct.valueUnit;
+        row.valueUnit = valueUnit;
+        row.total = parseInt(valueUnit) * parseInt(newProduct.quantity);
         row.quantity = newProduct.quantity;
         row.idClient = newProduct.idClient;
         row.nameClient = newProduct.nameClient;
@@ -93,7 +91,6 @@ const VentasModulo = () => {
     setSelectedIndex(null);
     setNameProduct("");
     setNewProduct({
-      valueUnit: "",
       quantity: "",
       idClient: "",
       nameClient: "",
@@ -108,15 +105,12 @@ const VentasModulo = () => {
       "Ok: Editar registro \nCancel: Borrar registro"
     );
     const row = rows.find((row) => row.id === id);
-
-
-
     if (option) {
       setIsEditing({ ...isEditing, state: true, id: id });
       setSelectedIndex(options.indexOf(row.id));
       setNameProduct(row.nameProduct);
+      setValueUnit(row.valueUnit);
       setNewProduct({
-        valueUnit: row.valueUnit,
         quantity: row.quantity,
         idClient: row.idClient,
         nameClient: row.nameClient,
@@ -125,19 +119,15 @@ const VentasModulo = () => {
       setRows(rows.filter((row) => row.id !== id));
     }
   };
-<<<<<<< HEAD
 
-=======
   const handleMenuItemClick = (index) => {
     setSelectedIndex(index);
-    setNameProduct(options[index]);
+    setNameProduct(options[index].description);
+    setValueUnit(options[index].price);
+    setIdProduct(options[index].idProduct);
     setAnchorEl(null);
   };
-
-  // useEffect(() => {
-  //   setRows([...products]);
-  // },[products])
->>>>>>> 1ecaa21c635a9f2e98b447ac79f99cf8e039b981
+  
   return (
     <div className="ventasModulo">
       <div className="ventasModulo__left">
@@ -155,9 +145,7 @@ const VentasModulo = () => {
               aria-expanded={open ? "true" : undefined}
               onClick={(e) => setAnchorEl(e.currentTarget)}
             >
-              <ListItemText
-                primary={nameProduct || "Select option"}
-              />
+              <ListItemText primary={nameProduct || "Select option"} />
               <KeyboardArrowDownIcon />
             </ListItem>
           </List>
@@ -173,22 +161,22 @@ const VentasModulo = () => {
           >
             {options.map((option, index) => (
               <MenuItem
-                key={option}
+                key={option.description}
                 selected={index === selectedIndex}
                 onClick={() => handleMenuItemClick(index)}
               >
-                {option}
+                {option.description}
               </MenuItem>
             ))}
           </Menu>
         </div>
-        <TextField
-          name="valueUnit"
-          value={newProduct.valueUnit}
-          label="Valor del producto"
-          onChange={(e) => handleOnChange(e)}
+        <h2>Precio: {valueUnit}</h2>
+        {/* <TextField
+          disabled
+          value={valueUnit}
+          // label="Valor del producto"
           variant="standard"
-        />
+        /> */}
         <TextField
           name="quantity"
           value={newProduct.quantity}
@@ -273,8 +261,8 @@ const VentasModulo = () => {
                     .toLowerCase()
                     .includes(searchData.trim().toLowerCase())
                 )
-                .map((row) => (
-                  <TableRow key={row.id | 0} onClick={() => handleRow(row.id)}>
+                .map((row,index) => (
+                  <TableRow key={index} onClick={() => handleRow(row.id)}>
                     <TableCell>{row.id}</TableCell>
                     <TableCell>{row.nameProduct}</TableCell>
                     <TableCell>{row.valueUnit}</TableCell>

@@ -33,20 +33,6 @@ function App() {
           </Route>
           <Route path="/admin">
             <Producto />
-<<<<<<< HEAD
-            <button onClick={() => dispatch(handleLogout)}>log out</button>
-          </>
-        );
-      case "vendedor":
-        return <VentasModulo />;
-      case "admin":
-        break;
-      default:
-        break;
-    }
-  }
-  return <Login />;
-=======
           </Route>
           <Route path="/">
             <Login />
@@ -55,7 +41,6 @@ function App() {
       </div>
     </Router>
   );
->>>>>>> 1ecaa21c635a9f2e98b447ac79f99cf8e039b981
 }
 
 export default App;
