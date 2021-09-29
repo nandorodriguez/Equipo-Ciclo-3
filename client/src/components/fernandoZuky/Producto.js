@@ -1,15 +1,22 @@
 import React, { useState } from "react";
 import { Container } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+<<<<<<< HEAD
 // import { Row } from "react-bootstrap";
 // import { Col } from "react-bootstrap";
 import { Form, FormControl } from "react-bootstrap";
+=======
+import { Form } from "react-bootstrap";
+>>>>>>> 1ecaa21c635a9f2e98b447ac79f99cf8e039b981
 import { Button } from "react-bootstrap";
 import { Table } from "react-bootstrap";
 
 import "./Producto.css";
+import { useSelector, useDispatch } from "react-redux";
+import { selectProducts, handleUpdateProducts } from "../../features/productSlice";
 
 const Producto = () => {
+<<<<<<< HEAD
   const [rows, setRows] = useState([]);
   const [searchData, setSearchData] = useState("");
   const [isEditing, setIsEditing] = useState({ state: false, idProduct: "" });
@@ -83,6 +90,19 @@ const Producto = () => {
     }
   };
 
+=======
+  const products = useSelector(selectProducts)
+  const dispatch = useDispatch();
+  const handleAddProduct = () => {
+
+  }
+  const handleEditProduct = () => {
+
+  }
+  const handleDeleteProduct = () => {
+    
+  }
+>>>>>>> 1ecaa21c635a9f2e98b447ac79f99cf8e039b981
   return (
     <div>
       <Container className="box-effect">
