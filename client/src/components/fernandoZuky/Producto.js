@@ -95,7 +95,7 @@ const Producto = () => {
         {/* tabla de registro de productos  */}
         <div className="row d-flex justify-content-center">
           <div className="col-8">
-            <Table striped bordered hover className="col-8">
+            {rows.length !== 0 ?  <Table striped bordered hover className="col-8">
               <thead>
                 <tr>
                   <th>#</th>
@@ -116,7 +116,7 @@ const Producto = () => {
                   </tr>
                 ))}
               </tbody>
-            </Table>
+            </Table>: <h2>No hay productos registrados</h2>}
           </div>
         </div>
       </Container>
