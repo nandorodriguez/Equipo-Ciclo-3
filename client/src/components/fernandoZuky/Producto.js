@@ -22,11 +22,19 @@ const Producto = () => {
   // const products = useSelector(selectProducts);
   const dispatch = useDispatch();
   const handleAddProduct = () => {
-    console.log(product)
     setRows([product, ...rows]);
+    handleClear();
   };
   const handleEditProduct = () => {};
   const handleDeleteProduct = () => {};
+  const handleClear = () => {
+    setProduct({
+      nameProduct: "",
+      idProduct: "",
+      quantity: 0,
+      price: 0,
+    });
+  }
   const handleChange = (e) => {
     setProduct({ ...product, [e.target.name]: e.target.value });
   };
@@ -79,7 +87,7 @@ const Producto = () => {
             </Button>
           </div>
           <div className="col-6 pr-5 style-button">
-            <Button className=" col-2 mb-4 mt-4" variant="secondary">
+            <Button className=" col-2 mb-4 mt-4" variant="secondary" onClick={()=>handleClear()}>
               Clear
             </Button>
           </div>
