@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
@@ -8,25 +8,45 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { selectUser } from "../../../features/userSlice";
+import { selectProducts } from "../../../features/productSlice";
 import { useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+
 import "../styles/VentasModulo.css";
+
+const options = [
+  "Show some love to MUI",
+  "Show all notification content",
+  "Hide sensitive notification content",
+  "Hide all notification content",
+];
 
 const VentasModulo = () => {
   const user = useSelector(selectUser);
+  const products = useSelector(selectProducts);
   const [rows, setRows] = useState([]);
   const [isEditing, setIsEditing] = useState({ state: false, id: "" });
   const [newProduct, setNewProduct] = useState({
-    nameProduct: "",
     valueUnit: "",
     quantity: "",
     idClient: "",
     nameClient: "",
   });
   const [searchData, setSearchData] = useState("");
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [nameProduct, setNameProduct] = useState("");
+  const [selectedIndex, setSelectedIndex] = useState("");
+  const open = Boolean(anchorEl);
+
   const handleNewProduct = () => {
-    const { nameProduct, valueUnit, quantity, idClient, nameClient } =
+    const { valueUnit, quantity, idClient, nameClient } =
       newProduct;
     setRows([
       {
@@ -42,8 +62,9 @@ const VentasModulo = () => {
       },
       ...rows,
     ]);
+    setSelectedIndex(null);
+    setNameProduct("");
     setNewProduct({
-      nameProduct: "",
       valueUnit: "",
       quantity: "",
       idClient: "",
@@ -54,7 +75,7 @@ const VentasModulo = () => {
     const oldData = [...rows];
     const newData = oldData.filter((row) => {
       if (row.id === isEditing.id) {
-        row.nameProduct = newProduct.nameProduct;
+        row.nameProduct = nameProduct;
         row.valueUnit = newProduct.valueUnit;
         row.quantity = newProduct.quantity;
         row.idClient = newProduct.idClient;
@@ -63,8 +84,9 @@ const VentasModulo = () => {
       return row;
     });
     setRows(newData);
+    setSelectedIndex(null);
+    setNameProduct("");
     setNewProduct({
-      nameProduct: "",
       valueUnit: "",
       quantity: "",
       idClient: "",
@@ -82,8 +104,9 @@ const VentasModulo = () => {
     const row = rows.find((row) => row.id === id);
     if (option) {
       setIsEditing({ ...isEditing, state: true, id: id });
+      setSelectedIndex(options.indexOf(row.id));
+      setNameProduct(row.nameProduct);
       setNewProduct({
-        nameProduct: row.nameProduct,
         valueUnit: row.valueUnit,
         quantity: row.quantity,
         idClient: row.idClient,
@@ -93,16 +116,59 @@ const VentasModulo = () => {
       setRows(rows.filter((row) => row.id !== id));
     }
   };
+  const handleMenuItemClick = (index) => {
+    setSelectedIndex(index);
+    setNameProduct(options[index]);
+    setAnchorEl(null);
+  };
+
+  // useEffect(() => {
+  //   setRows([...products]);
+  // },[products])
   return (
     <div className="ventasModulo">
       <div className="ventasModulo__left">
-        <TextField
-          name="nameProduct"
-          value={newProduct.nameProduct}
-          onChange={(e) => handleOnChange(e)}
-          label="Nombre del producto"
-          variant="standard"
-        />
+        <div>
+          <List
+            component="nav"
+            aria-label="Device settings"
+            sx={{ bgcolor: "background.paper" }}
+          >
+            <ListItem
+              button
+              id="lock-button"
+              aria-haspopup="listbox"
+              aria-controls="lock-menu"
+              aria-expanded={open ? "true" : undefined}
+              onClick={(e) => setAnchorEl(e.currentTarget)}
+            >
+              <ListItemText
+                primary={nameProduct || "Select option"}
+              />
+              <KeyboardArrowDownIcon />
+            </ListItem>
+          </List>
+          <Menu
+            id="lock-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={() => setAnchorEl(null)}
+            MenuListProps={{
+              "aria-labelledby": "lock-button",
+              role: "listbox",
+            }}
+          >
+            {options.map((option, index) => (
+              <MenuItem
+                key={option}
+                selected={index === selectedIndex}
+                onClick={() => handleMenuItemClick(index)}
+              >
+                {option}
+              </MenuItem>
+            ))}
+          </Menu>
+        </div>
         <TextField
           name="valueUnit"
           value={newProduct.valueUnit}

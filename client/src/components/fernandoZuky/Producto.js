@@ -1,14 +1,25 @@
 import React from "react";
 import { Container } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-// import { Row } from "react-bootstrap";
-// import { Col } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { Table } from "react-bootstrap";
 import "./Producto.css";
+import { useSelector, useDispatch } from "react-redux";
+import { selectProducts, handleUpdateProducts } from "../../features/productSlice";
 
 const Producto = () => {
+  const products = useSelector(selectProducts)
+  const dispatch = useDispatch();
+  const handleAddProduct = () => {
+
+  }
+  const handleEditProduct = () => {
+
+  }
+  const handleDeleteProduct = () => {
+    
+  }
   return (
     <div>
       <Container className="box-effect">
