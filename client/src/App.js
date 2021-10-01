@@ -13,9 +13,9 @@ function App() {
   const dispatch = useDispatch();
   return (
     <Router>
-      <div>
-        <nav>
-          <ul>
+      <div style={{ position: "relative" }}>
+        <nav style={{ position: "fixed", width:"100%" }}>
+          <ul className="lista__links">
             <li>
               <Link to="/">Home</Link>
             </li>
