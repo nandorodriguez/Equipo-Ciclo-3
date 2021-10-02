@@ -8,6 +8,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import {v4 as uuidv4} from 'uuid';
 import "../styles/Usuarios.css";
 
 const Usuarios = () => {
@@ -21,10 +22,11 @@ const Usuarios = () => {
   });
   const [searchData, setSearchData] = useState("");
   const handleNewUser = () => {
-    const { nombre, apellido, role, estado } =
+    const {  nombre, apellido, role, estado } =
       newUser;
     setRows([
       {
+        id:uuidv4(),
         nombre,
         apellido,
         role,
