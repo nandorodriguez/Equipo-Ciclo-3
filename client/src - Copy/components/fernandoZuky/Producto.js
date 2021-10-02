@@ -86,7 +86,7 @@ const Producto = () => {
   };
   const handleRow = (idProduct) => {
     const option = window.confirm(
-      "OK: Editar registro \nCANCEL: Borrar registro"
+      "Ok: Editar registro \nCancel: Borrar registro"
     );
     const row = rows.find((row) => row.idProduct === idProduct);
 
@@ -105,11 +105,9 @@ const Producto = () => {
 
   return (
     <div>
-      <br></br>
-      <br></br>
       <Container className="box-effect">
         <div className="row">
-          <h3 className="title-style text-center">PRODUCT REGISTRATION</h3>
+          <h1 className="title-style text-center">product registration</h1>
         </div>
         <div>
           <Form className="row d-flex justify-content-center">
@@ -181,7 +179,7 @@ const Producto = () => {
                 type="submit"
                 onClick={() => handleNewProduct()}
               >
-                Save Product
+                Upload Product
               </Button>
             ) : (
               <Button
@@ -190,7 +188,7 @@ const Producto = () => {
                 color="success"
                 onClick={() => handleUpdateProduct()}
               >
-                Upload Product
+                Actualizar datos
               </Button>
             )}
           </div>
