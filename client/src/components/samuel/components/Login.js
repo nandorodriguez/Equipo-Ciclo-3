@@ -1,68 +1,40 @@
-import React, { useState } from "react";
-import GoogleIcon from "@mui/icons-material/Google";
+import React, { useEffect } from "react";
 import Button from "@mui/material/Button";
-import { useDispatch } from "react-redux";
-import { handleLogin } from "../../../features/userSlice";
-import "../styles/Login.css";
+import { selectUser, handleLogin } from "../../../features/userSlice";
+import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router";
+import { auth, db, provider } from "../../../firebase";
+import { signInWithPopup } from "firebase/auth";
+import GoogleIcon from "@mui/icons-material/Google";
+
+import "../styles/Login.css";
 
 const Login = () => {
-  const history = useHistory();
+  const user = useSelector(selectUser);
   const dispatch = useDispatch();
-  const [users, setUsers] = useState([
-    {
-      id: "1",
-      name: "samuel ceron",
-      email: "est.wilder.taborda@unimilitar.edu.co",
-      role: "usuario",
-    },
-    {
-      id: "2",
-      name: "andres",
-      email: "andres@gmail.com",
-      role: "vendedor",
-    },
-    {
-      id: "3",
-      name: "perro",
-      email: "perro@gmail.com",
-      role: "admin",
-    },
-  ]);
+  const history = useHistory();
+  const handleSignIn = async () => {
+
+    await signInWithPopup(auth,provider).then(({ user }) => {
+      dispatch(
+        handleLogin({
+          id: user.uid,
+          name: user.displayName,
+          email: user.email,
+          photo: user.photoURL,
+        })
+      );
+    });
+  };
   return (
     <div className="login">
       <Button
         variant="contained"
         color="error"
         startIcon={<GoogleIcon />}
-        onClick={() => {
-          dispatch(handleLogin(users[0]));
-          history.push("/admin");
-        }}
+        onClick={() => handleSignIn()}
       >
-        usuario
-      </Button>
-      <Button
-        variant="contained"
-        color="error"
-        startIcon={<GoogleIcon />}
-        onClick={() => {
-          dispatch(handleLogin(users[1]));
-          history.push("/ventas");
-        }}
-      >
-        vendedor
-      </Button>
-      <Button
-        variant="contained"
-        color="error"
-        startIcon={<GoogleIcon />}
-        onClick={() => {
-          dispatch(handleLogin(users[2]));
-          history.push("/admin");
-        }}
-      >
-        admin
+        Login with Google
       </Button>
     </div>
   );
