@@ -1,8 +1,5 @@
 .ventasModulo{
-    background-image: url("../images/bannerVentas.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
+    background: #fff;
     display: flex;
     justify-content: space-evenly;
     align-items: center;

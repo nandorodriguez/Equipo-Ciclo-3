@@ -78,7 +78,7 @@ const Producto = () => {
       description: "",
       price: "",
       status: "",
-    })
+    });
   };
 
   const handleOnChange = (e) => {
@@ -104,7 +104,7 @@ const Producto = () => {
   };
 
   return (
-    <div>
+    <div className="admin">
       <Container className="box-effect">
         <div className="row">
           <h1 className="title-style text-center">product registration</h1>

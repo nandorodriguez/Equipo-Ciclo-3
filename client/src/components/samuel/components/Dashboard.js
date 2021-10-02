@@ -1,71 +1,53 @@
-import React,{useState} from "react";
-import { handleLogin } from "../../../features/userSlice";
-import Button from "@mui/material/Button";
-import { useDispatch } from "react-redux";
-import { useHistory } from "react-router";
-import "../styles/Dashboard.css"
+import React, { useState } from "react";
 
-const Home = () => {
-    const dispatch = useDispatch();
-    const history = useHistory();
+import "../styles/Dashboard.css";
+import Producto from "../../fernandoZuky/Producto";
+import Usuarios from "../../edier/components/Usuarios";
+import VentasModulo from "./VentasModulo";
+import Home from "./Home";
+
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+
+const Dashboard = () => {
   
-   const [users, setUsers] = useState([
-     {
-       id: "1",
-       name: "samuel ceron",
-       email: "est.wilder.taborda@unimilitar.edu.co",
-       role: "usuario",
-     },
-     {
-       id: "2",
-       name: "andres",
-       email: "andres@gmail.com",
-       role: "vendedor",
-     },
-     {
-       id: "3",
-       name: "perro",
-       email: "perro@gmail.com",
-       role: "admin",
-     },
-   ]);
+  
   return (
-    <div className="home">
-      
-      <div>
-        <Button
-          variant="contained"
-          color="error"
-          onClick={() => {
-            dispatch(handleLogin(users[0]));
-            history.push("/admin");
-          }}
-        >
-          usuario
-        </Button>
-        <Button
-          variant="contained"
-          color="error"
-          onClick={() => {
-            dispatch(handleLogin(users[1]));
-            history.push("/ventas");
-          }}
-        >
-          vendedor
-        </Button>
-        <Button
-          variant="contained"
-          color="error"
-          onClick={() => {
-            dispatch(handleLogin(users[2]));
-            history.push("/admin");
-          }}
-        >
-          admin
-        </Button>
+    <Router>
+      <div className="dashboard">
+
+        <div style={{ position: "absolute", width: "100%", top:"0",left:"0" }}>
+          <ul className="lista__links">
+            <li>
+              <Link to="/home">Home</Link>
+            </li>
+            <li>
+              <Link to="/ventas">Vendedor</Link>
+            </li>
+            <li>
+              <Link to="/admin">Administrador</Link>
+            </li>
+            <li>
+              <Link to="/usuarios">Usuarios</Link>
+            </li>
+          </ul>
+        </div>
+        <Switch>
+          <Route path="/ventas">
+            <VentasModulo />
+          </Route>
+          <Route path="/admin">
+            <Producto />
+          </Route>
+          <Route path="/usuarios">
+            <Usuarios />
+          </Route>
+          <Route path="/home">
+            <Home />
+          </Route>
+        </Switch>
       </div>
-    </div>
+    </Router>
   );
 };
 
-export default Home;
+export default Dashboard;

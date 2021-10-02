@@ -14,7 +14,6 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { selectUser } from "../../../features/userSlice";
 import { selectProducts } from "../../../features/productSlice";
 import { useSelector } from "react-redux";
-// import { v4 as uuidv4 } from "uuid";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";

@@ -1,20 +1,41 @@
-import React from "react";
-import {GoogleLogin} from "react-google-login";
+import React, { useEffect } from "react";
+import Button from "@mui/material/Button";
+import { selectUser, handleLogin } from "../../../features/userSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router";
+import { auth, db, provider } from "../../../firebase";
+import { signInWithPopup } from "firebase/auth";
+import GoogleIcon from "@mui/icons-material/Google";
+
 import "../styles/Login.css";
 
 const Login = () => {
-  const responseGoogle = (response) => {
-    console.log(response);
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const handleSignIn = async () => {
+
+    await signInWithPopup(auth,provider).then(({ user }) => {
+      dispatch(
+        handleLogin({
+          id: user.uid,
+          name: user.displayName,
+          email: user.email,
+          photo: user.photoURL,
+        })
+      );
+    });
   };
   return (
     <div className="login">
-      <GoogleLogin
-        clientId="1067132800144-dgmcci3mba0sro4o6lbvr8b6vk1cn5pj.apps.googleusercontent.com"
-        buttonText="Login"
-        onSuccess={() => responseGoogle()}
-        onFailure={() => responseGoogle()}
-        cookiePolicy={"single_host_origin"}
-      />
+      <Button
+        variant="contained"
+        color="error"
+        startIcon={<GoogleIcon />}
+        onClick={() => handleSignIn()}
+      >
+        Login with Google
+      </Button>
     </div>
   );
 };
