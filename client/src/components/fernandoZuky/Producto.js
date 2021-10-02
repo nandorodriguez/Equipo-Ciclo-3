@@ -5,26 +5,30 @@ import { Form, FormControl } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { handleUpdateProducts, selectProducts } from "../../features/productSlice";
+import {
+  handleUpdateProducts,
+  selectProducts,
+} from "../../features/productSlice";
 import "./Producto.css";
 
 const Producto = () => {
-  const products = useSelector(selectProducts)
+  const products = useSelector(selectProducts);
   const dispatch = useDispatch();
   const [rows, setRows] = useState([]);
   const [searchData, setSearchData] = useState("");
-  const [isEditing, setIsEditing] = useState({ state: false, idProduct: "" });
+  const [isEditing, setIsEditing] = useState({ state: false, id: "" });
   const [newProduct, setNewProduct] = useState({
-    idProduct:"",
+    idProduct: "",
     description: "",
     price: "",
     status: "",
   });
   useEffect(() => {
     setRows(products);
-  },[products])
+  }, [products]);
+  console.log(rows);
   const handleNewProduct = () => {
-    const {idProduct, description, price, status } = newProduct;
+    const { idProduct, description, price, status } = newProduct;
     dispatch(
       handleUpdateProducts([
         {
@@ -46,7 +50,7 @@ const Producto = () => {
       ...rows,
     ]);
     setNewProduct({
-      idProduct:"",
+      idProduct: "",
       description: "",
       price: "",
       status: "",
@@ -55,24 +59,26 @@ const Producto = () => {
 
   const handleUpdateProduct = () => {
     const oldData = [...rows];
-    const newData = oldData.filter((row) => {
-      if (row.idProduct === isEditing.idProduct) {
-        row.idProduct = newProduct.idProduct
-        row.description = newProduct.description;
-        row.price = newProduct.price;
-        row.status = newProduct.status;
+    let newData = oldData.map((row) => {
+      if (row.idProduct === isEditing.id) {
+        return {
+          ...row,
+          description: newProduct.description,
+          price: newProduct.price,
+          status: newProduct.status,
+        };
       }
       return row;
     });
-
     setRows(newData);
+    dispatch(handleUpdateProducts(newData));
+    setIsEditing({ ...isEditing, state: false, id: "" });
     setNewProduct({
-      idProduct:"",
-      description:"",
+      idProduct: "",
+      description: "",
       price: "",
       status: "",
-    });
-    setIsEditing({ ...isEditing, state: false, idProduct: "" });
+    })
   };
 
   const handleOnChange = (e) => {
@@ -85,10 +91,10 @@ const Producto = () => {
     const row = rows.find((row) => row.idProduct === idProduct);
 
     if (option) {
-      setIsEditing({ ...isEditing, state: true, idProduct: idProduct });
+      setIsEditing({ ...isEditing, state: true, id: idProduct });
       setNewProduct({
-        idProduct:row.idProduct,
-        description:row.description,
+        idProduct: row.idProduct,
+        description: row.description,
         price: row.price,
         status: row.status,
       });
@@ -112,18 +118,19 @@ const Producto = () => {
               aria-label="Search"
               onChange={(e) => setSearchData(e.target.value)}
             />
-            <Form.Group
-              className="col-8 mb-4 mt-4"
-              controlId="formBasicPassword"
-            >
-              <Form.Control
-                value={newProduct.idProduct}
-                name="idProduct"
-                type="id"
-                placeholder="Id Product"
-                onChange={(e) => handleOnChange(e)}
-              />
-            </Form.Group>
+            {!isEditing.state && (
+              <Form.Group
+                className="col-8 mb-4 mt-4"
+                controlId="formBasicPassword"
+              >
+                <Form.Control
+                  value={newProduct.idProduct}
+                  name="idProduct"
+                  placeholder="Id Product"
+                  onChange={(e) => handleOnChange(e)}
+                />
+              </Form.Group>
+            )}
 
             <Form.Group
               className="col-8 mb-4 mt-4"

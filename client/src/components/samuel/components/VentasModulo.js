@@ -18,15 +18,7 @@ import { useSelector } from "react-redux";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-
 import "../styles/VentasModulo.css";
-
-// const options = [
-//   "Show some love to MUI",
-//   "Show all notification content",
-//   "Hide sensitive notification content",
-//   "Hide all notification content",
-// ];
 
 const VentasModulo = () => {
   const user = useSelector(selectUser);
