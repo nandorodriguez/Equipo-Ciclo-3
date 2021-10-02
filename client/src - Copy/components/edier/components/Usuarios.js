@@ -16,18 +16,18 @@ const Usuarios = () => {
   const [newUser, setNewUser] = useState({
     nombre: "", 
     apellido: "",  
-    rol: "",  
+    role: "",  
     estado: "", 
   });
   const [searchData, setSearchData] = useState("");
   const handleNewUser = () => {
-    const { nombre, apellido, rol, estado } =
+    const { nombre, apellido, role, estado } =
       newUser;
     setRows([
       {
         nombre,
         apellido,
-        rol,
+        role,
         estado,
       },
       ...rows,
@@ -35,7 +35,7 @@ const Usuarios = () => {
     setNewUser({
       nombre: "",
       apellido: "",
-      rol: "",
+      role: "",
       estado: "",
     });
   };
@@ -45,7 +45,7 @@ const Usuarios = () => {
       if (row.id === isEditing.id) {
         row.nombre = newUser.nombre;
         row.apellido = newUser.apellido;
-        row.rol = newUser.rol;
+        row.role = newUser.role;
         row.estado = newUser.estado;
       }
       return row;
@@ -54,7 +54,7 @@ const Usuarios = () => {
     setNewUser({
       nombre: "",
       apellido: "",
-      rol: "",
+      role: "",
       estado: "",
     });
     setIsEditing({ ...isEditing, state: false, id: "" });
@@ -72,7 +72,7 @@ const Usuarios = () => {
       setNewUser({
         nombre: row.nombre,
         apellido: row.apellido,
-        role: row.rol,
+        role: row.role,
         estado: row.estado,
       });
     } else {
@@ -97,9 +97,9 @@ const Usuarios = () => {
           variant="standard"
         />
         <TextField
-          name="rol"
-          value={newUser.rol}
-          label="Rol del Usuario"
+          name="role"
+          value={newUser.role}
+          label="Role del Usuario"
           onChange={(e) => handleOnChange(e)}
           variant="standard"
         />
@@ -144,7 +144,7 @@ const Usuarios = () => {
                   <strong>Apellidos</strong>
                 </TableCell>
                 <TableCell>
-                  <strong>Rol</strong>
+                  <strong>Role</strong>
                 </TableCell>
                 <TableCell>
                   <strong>Estado</strong>
@@ -163,7 +163,7 @@ const Usuarios = () => {
                   <TableRow key={row.id | 0} onClick={() => handleRow(row.id)}>
                     <TableCell>{row.nombre}</TableCell>
                     <TableCell>{row.apellido}</TableCell>
-                    <TableCell>{row.rol}</TableCell>
+                    <TableCell>{row.role}</TableCell>
                     <TableCell>{row.estado}</TableCell>
                   </TableRow>
                 ))}
