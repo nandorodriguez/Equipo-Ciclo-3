@@ -1,69 +1,20 @@
-import React, { useState } from "react";
-import GoogleIcon from "@mui/icons-material/Google";
-import Button from "@mui/material/Button";
-import { useDispatch } from "react-redux";
-import { handleLogin } from "../../../features/userSlice";
+import React from "react";
+import {GoogleLogin} from "react-google-login";
 import "../styles/Login.css";
-import { useHistory } from "react-router";
 
 const Login = () => {
-  const history = useHistory();
-  const dispatch = useDispatch();
-  const [users, setUsers] = useState([
-    {
-      id: "1",
-      name: "samuel ceron",
-      email: "est.wilder.taborda@unimilitar.edu.co",
-      role: "usuario",
-    },
-    {
-      id: "2",
-      name: "andres",
-      email: "andres@gmail.com",
-      role: "vendedor",
-    },
-    {
-      id: "3",
-      name: "perro",
-      email: "perro@gmail.com",
-      role: "admin",
-    },
-  ]);
+  const responseGoogle = (response) => {
+    console.log(response);
+  };
   return (
     <div className="login">
-      <Button
-        variant="contained"
-        color="error"
-        startIcon={<GoogleIcon />}
-        onClick={() => {
-          dispatch(handleLogin(users[0]));
-          history.push("/admin");
-        }}
-      >
-        usuario
-      </Button>
-      <Button
-        variant="contained"
-        color="error"
-        startIcon={<GoogleIcon />}
-        onClick={() => {
-          dispatch(handleLogin(users[1]));
-          history.push("/ventas");
-        }}
-      >
-        vendedor
-      </Button>
-      <Button
-        variant="contained"
-        color="error"
-        startIcon={<GoogleIcon />}
-        onClick={() => {
-          dispatch(handleLogin(users[2]));
-          history.push("/admin");
-        }}
-      >
-        admin
-      </Button>
+      <GoogleLogin
+        clientId="1067132800144-dgmcci3mba0sro4o6lbvr8b6vk1cn5pj.apps.googleusercontent.com"
+        buttonText="Login"
+        onSuccess={() => responseGoogle()}
+        onFailure={() => responseGoogle()}
+        cookiePolicy={"single_host_origin"}
+      />
     </div>
   );
 };
