@@ -10,29 +10,35 @@ import {
   selectProducts,
 } from "../../features/productSlice";
 import "./Producto.css";
+import axios from "axios";
 
 const Producto = () => {
   const products = useSelector(selectProducts);
   const dispatch = useDispatch();
+  const uri = "http://localhost:8080/products";
   const [rows, setRows] = useState([]);
   const [searchData, setSearchData] = useState("");
   const [isEditing, setIsEditing] = useState({ state: false, id: "" });
   const [newProduct, setNewProduct] = useState({
-    idProduct: "",
     description: "",
     price: "",
     status: "",
   });
+  const fetchData = async () => {
+    await axios.get(uri).then(({ data }) => setRows(data));
+  };
   useEffect(() => {
-    setRows(products);
+    fetchData();
   }, [products]);
-  console.log(rows);
-  const handleNewProduct = () => {
-    const { idProduct, description, price, status } = newProduct;
+  const handleNewProduct = async () => {
+    const { description, price, status } = newProduct;
+    await axios
+      .post(uri, newProduct)
+      .then(() => alert("producto creado"))
+      .catch((e) => console.error(e));
     dispatch(
       handleUpdateProducts([
         {
-          idProduct,
           description,
           price,
           status,
@@ -40,17 +46,7 @@ const Producto = () => {
         ...rows,
       ])
     );
-    setRows([
-      {
-        idProduct,
-        description,
-        price,
-        status,
-      },
-      ...rows,
-    ]);
     setNewProduct({
-      idProduct: "",
       description: "",
       price: "",
       status: "",
@@ -74,7 +70,6 @@ const Producto = () => {
     dispatch(handleUpdateProducts(newData));
     setIsEditing({ ...isEditing, state: false, id: "" });
     setNewProduct({
-      idProduct: "",
       description: "",
       price: "",
       status: "",
@@ -84,22 +79,23 @@ const Producto = () => {
   const handleOnChange = (e) => {
     setNewProduct({ ...newProduct, [e.target.name]: e.target.value });
   };
-  const handleRow = (idProduct) => {
+  const handleRow = async (idProduct) => {
     const option = window.confirm(
       "Ok: Editar registro \nCancel: Borrar registro"
     );
-    const row = rows.find((row) => row.idProduct === idProduct);
+    const row = rows.find((row) => row._id === idProduct);
 
     if (option) {
       setIsEditing({ ...isEditing, state: true, id: idProduct });
       setNewProduct({
-        idProduct: row.idProduct,
         description: row.description,
         price: row.price,
         status: row.status,
       });
     } else {
-      setRows(rows.filter((row) => row.idProduct !== idProduct));
+      await axios
+        .delete(uri, { data: { _id: idProduct } })
+        .then(({ data }) => setRows(data));
     }
   };
 
@@ -118,20 +114,6 @@ const Producto = () => {
               aria-label="Search"
               onChange={(e) => setSearchData(e.target.value)}
             />
-            {!isEditing.state && (
-              <Form.Group
-                className="col-8 mb-4 mt-4"
-                controlId="formBasicPassword"
-              >
-                <Form.Control
-                  value={newProduct.idProduct}
-                  name="idProduct"
-                  placeholder="Id Product"
-                  onChange={(e) => handleOnChange(e)}
-                />
-              </Form.Group>
-            )}
-
             <Form.Group
               className="col-8 mb-4 mt-4"
               controlId="description"
@@ -216,11 +198,8 @@ const Producto = () => {
                       .includes(searchData.trim().toLowerCase())
                   )
                   .map((row) => (
-                    <tr
-                      key={row.idProduct | 0}
-                      onClick={() => handleRow(row.idProduct)}
-                    >
-                      <td>{row.idProduct}</td>
+                    <tr key={row._id} onClick={() => handleRow(row._id)}>
+                      <td>{row._id}</td>
                       <td>{row.description}</td>
                       <td>{row.price}</td>
                       <td>{row.status}</td>
