@@ -1,30 +1,43 @@
 import React, { useState, useEffect } from "react";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
+import axios from "axios";
+import {
+  Button,
+  TextField,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Menu,
+  MenuItem,
+  List,
+  ListItem,
+  ListItemText,
+  IconButton,
+} from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { selectUser } from "../../../features/userSlice";
 import { useSelector } from "react-redux";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
 import "../styles/VentasModulo.css";
-import axios from "axios";
 
 const VentasModulo = () => {
   const uri = "http://localhost:8080";
   const user = useSelector(selectUser);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
   const [options, setOptions] = useState([]);
   const [rows, setRows] = useState([]);
   const [isEditing, setIsEditing] = useState({ state: false, id: "" });
+  const [searchData, setSearchData] = useState("");
+  const [nameProduct, setNameProduct] = useState("");
+  const [valueUnit, setValueUnit] = useState(null);
+  const [idProduct, setIdProduct] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState("");
   const [newProduct, setNewProduct] = useState({
     quantity: "",
     idClient: "",
@@ -34,17 +47,6 @@ const VentasModulo = () => {
     await axios.get(uri + "/products").then(({ data }) => setOptions(data));
     await axios.get(uri + "/ventas").then(({ data }) => setRows(data));
   };
-  useEffect(() => {
-    fetchData();
-  }, []);
-  const [searchData, setSearchData] = useState("");
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [nameProduct, setNameProduct] = useState("");
-  const [valueUnit, setValueUnit] = useState(null);
-  const [idProduct, setIdProduct] = useState(null);
-  const [selectedIndex, setSelectedIndex] = useState("");
-  const open = Boolean(anchorEl);
-
   const handleNewProduct = async () => {
     const { quantity, idClient, nameClient } = newProduct;
     await axios
@@ -96,12 +98,9 @@ const VentasModulo = () => {
   const handleOnChange = (e) => {
     setNewProduct({ ...newProduct, [e.target.name]: e.target.value });
   };
-  const handleRow = async (id) => {
-    const option = window.confirm(
-      "Ok: Editar registro \nCancel: Borrar registro"
-    );
-    const row = rows.find((row) => row.id === id);
-    if (option) {
+  const handleEditRow = async (id) => {
+    if (window.confirm("Are you sure you want to edit this purchase?")) {
+      const row = rows.find((row) => row._id === id);
       setIsEditing({ ...isEditing, state: true, id: id });
       setSelectedIndex(options.indexOf(row.id));
       setNameProduct(row.nameProduct);
@@ -111,13 +110,15 @@ const VentasModulo = () => {
         idClient: row.idClient,
         nameClient: row.nameClient,
       });
-    } else {
+    }
+  };
+  const handleDeleteRow = async (id) => {
+    if (window.confirm("Are you sure you want to delete this purchase?")) {
       await axios
         .delete(uri + "/ventas", { data: { _id: id } })
         .then(({ data }) => setRows(data));
     }
   };
-
   const handleMenuItemClick = (index) => {
     setSelectedIndex(index);
     setNameProduct(options[index].description);
@@ -125,6 +126,9 @@ const VentasModulo = () => {
     setIdProduct(options[index].idProduct);
     setAnchorEl(null);
   };
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <div className="ventasModulo">
@@ -168,39 +172,39 @@ const VentasModulo = () => {
             ))}
           </Menu>
         </div>
-        <h2>Precio: {valueUnit}</h2>
+        <h5>Price: {valueUnit}</h5>
         <TextField
           name="quantity"
           value={newProduct.quantity}
-          label="Cantidad"
+          label="Quantity"
           onChange={(e) => handleOnChange(e)}
           variant="standard"
         />
         <TextField
           name="idClient"
           value={newProduct.idClient}
-          label="ID del cliente"
+          label="Client ID"
           onChange={(e) => handleOnChange(e)}
           variant="standard"
         />
         <TextField
           name="nameClient"
           value={newProduct.nameClient}
-          label="Nombre del cliente"
+          label="Client name"
           onChange={(e) => handleOnChange(e)}
           variant="standard"
         />
         {!isEditing.state ? (
-          <Button variant="contained" onClick={() => handleNewProduct()}>
-            Registrar datos
-          </Button>
-        ) : (
           <Button
             variant="contained"
             color="success"
-            onClick={() => handleUpdateProduct()}
+            onClick={() => handleNewProduct()}
           >
-            Actualizar datos
+            Sell
+          </Button>
+        ) : (
+          <Button variant="contained" onClick={() => handleUpdateProduct()}>
+            Update
           </Button>
         )}
       </div>
@@ -216,32 +220,34 @@ const VentasModulo = () => {
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
                 <TableCell>
                   <strong>ID</strong>
                 </TableCell>
                 <TableCell>
-                  <strong>Nombre Pro</strong>
+                  <strong>Product</strong>
                 </TableCell>
                 <TableCell>
-                  <strong>Valor Unit</strong>
+                  <strong>Unit Value</strong>
                 </TableCell>
                 <TableCell>
-                  <strong>Cantidad</strong>
+                  <strong>Quantity</strong>
                 </TableCell>
                 <TableCell>
                   <strong>Total</strong>
                 </TableCell>
                 <TableCell>
-                  <strong>Fecha</strong>
+                  <strong>Date</strong>
                 </TableCell>
                 <TableCell>
-                  <strong>ID cliente</strong>
+                  <strong>Client ID</strong>
                 </TableCell>
                 <TableCell>
-                  <strong>Nombre cli</strong>
+                  <strong>Client Name</strong>
                 </TableCell>
                 <TableCell>
-                  <strong>Nombre vend</strong>
+                  <strong>Seller Name</strong>
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -254,7 +260,20 @@ const VentasModulo = () => {
                     .includes(searchData.trim().toLowerCase())
                 )
                 .map((row) => (
-                  <TableRow key={row._id} onClick={() => handleRow(row._id)}>
+                  <TableRow key={row._id}>
+                    <>
+                      <TableCell>
+                        <IconButton onClick={() => handleDeleteRow(row._id)}>
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
+
+                      <TableCell>
+                        <IconButton onClick={() => handleEditRow(row._id)}>
+                          <EditIcon />
+                        </IconButton>
+                      </TableCell>
+                    </>
                     <TableCell>{row._id}</TableCell>
                     <TableCell>{row.nameProduct}</TableCell>
                     <TableCell>{row.valueUnit}</TableCell>

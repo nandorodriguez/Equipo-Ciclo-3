@@ -1,9 +1,9 @@
+import React,{useState} from "react";
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import AgregarUsr from '../components/AgregarUsr';
 import ListadoUsuarios from '../components/ListadoUsuarios';
 import { Container } from 'react-bootstrap';
-import React,{useState} from "react";
 
 const Usuarios = () => {
   
