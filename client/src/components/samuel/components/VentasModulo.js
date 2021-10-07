@@ -12,16 +12,16 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { selectUser } from "../../../features/userSlice";
-import { selectProducts } from "../../../features/productSlice";
 import { useSelector } from "react-redux";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import "../styles/VentasModulo.css";
+import axios from "axios";
 
 const VentasModulo = () => {
+  const uri = "http://localhost:8080";
   const user = useSelector(selectUser);
-  const products = useSelector(selectProducts);
   const [options, setOptions] = useState([]);
   const [rows, setRows] = useState([]);
   const [isEditing, setIsEditing] = useState({ state: false, id: "" });
@@ -30,9 +30,13 @@ const VentasModulo = () => {
     idClient: "",
     nameClient: "",
   });
+  const fetchData = async () => {
+    await axios.get(uri + "/products").then(({ data }) => setOptions(data));
+    await axios.get(uri + "/ventas").then(({ data }) => setRows(data));
+  };
   useEffect(() => {
-    setOptions(products);
-  },[products]);
+    fetchData();
+  }, []);
   const [searchData, setSearchData] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
   const [nameProduct, setNameProduct] = useState("");
@@ -41,10 +45,10 @@ const VentasModulo = () => {
   const [selectedIndex, setSelectedIndex] = useState("");
   const open = Boolean(anchorEl);
 
-  const handleNewProduct = () => {
+  const handleNewProduct = async () => {
     const { quantity, idClient, nameClient } = newProduct;
-    setRows([
-      {
+    await axios
+      .post(uri + "/ventas", {
         nameProduct,
         valueUnit,
         quantity,
@@ -54,11 +58,12 @@ const VentasModulo = () => {
         total: parseInt(valueUnit) * parseInt(newProduct.quantity),
         date: JSON.stringify(new Date()).replace("T", ",").slice(1, 17),
         nameSeller: user.name,
-      },
-      ...rows,
-    ]);
+      })
+      .then(({ data }) => setRows(data))
+      .catch((e) => console.error(e));
     setSelectedIndex(null);
     setNameProduct("");
+    setValueUnit(null);
     setNewProduct({
       quantity: "",
       idClient: "",
@@ -91,7 +96,7 @@ const VentasModulo = () => {
   const handleOnChange = (e) => {
     setNewProduct({ ...newProduct, [e.target.name]: e.target.value });
   };
-  const handleRow = (id) => {
+  const handleRow = async (id) => {
     const option = window.confirm(
       "Ok: Editar registro \nCancel: Borrar registro"
     );
@@ -107,7 +112,9 @@ const VentasModulo = () => {
         nameClient: row.nameClient,
       });
     } else {
-      setRows(rows.filter((row) => row.id !== id));
+      await axios
+        .delete(uri + "/ventas", { data: { _id: id } })
+        .then(({ data }) => setRows(data));
     }
   };
 
@@ -118,7 +125,7 @@ const VentasModulo = () => {
     setIdProduct(options[index].idProduct);
     setAnchorEl(null);
   };
-  
+
   return (
     <div className="ventasModulo">
       <div className="ventasModulo__left">
@@ -162,12 +169,6 @@ const VentasModulo = () => {
           </Menu>
         </div>
         <h2>Precio: {valueUnit}</h2>
-        {/* <TextField
-          disabled
-          value={valueUnit}
-          // label="Valor del producto"
-          variant="standard"
-        /> */}
         <TextField
           name="quantity"
           value={newProduct.quantity}
@@ -252,9 +253,9 @@ const VentasModulo = () => {
                     .toLowerCase()
                     .includes(searchData.trim().toLowerCase())
                 )
-                .map((row,index) => (
-                  <TableRow key={index} onClick={() => handleRow(row.id)}>
-                    <TableCell>{row.id}</TableCell>
+                .map((row) => (
+                  <TableRow key={row._id} onClick={() => handleRow(row._id)}>
+                    <TableCell>{row._id}</TableCell>
                     <TableCell>{row.nameProduct}</TableCell>
                     <TableCell>{row.valueUnit}</TableCell>
                     <TableCell>{row.quantity}</TableCell>
