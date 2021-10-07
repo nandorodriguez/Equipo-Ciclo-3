@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import "../styles/Dashboard.css";
 import Producto from "../../fernandoZuky/Producto";
-import Usuarios from "../../edier/components/Usuarios";
+import Usuarios from "../../edierYilmar/components/Usuarios";
 import VentasModulo from "./VentasModulo";
 import Home from "./Home";
 
