@@ -7,7 +7,7 @@ const userSchema = new Schema({
     required: true,
   },
   apellidos: {
-    type: Number,
+    type: String,
     required: true,
   },
   role: {
@@ -15,12 +15,12 @@ const userSchema = new Schema({
     required: true,
   },
   estado: {
-    type: Bolean,
+    type: Boolean,
     required: true,
   },
   
 });
 
-const Usuarios = mongoose.model("Usuarios", userSchema);
+const Usuarios = mongoose.model("usuarios", userSchema);
 
 module.exports = Usuarios;
