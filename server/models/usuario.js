@@ -18,9 +18,8 @@ const userSchema = new Schema({
     type: Boolean,
     required: true,
   },
-  
 });
 
-const Usuarios = mongoose.model("usuarios", userSchema);
+const Usuario = mongoose.model("Usuario", userSchema);
 
-module.exports = Usuarios;
+module.exports = Usuario;
