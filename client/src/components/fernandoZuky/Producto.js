@@ -4,17 +4,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Form, FormControl } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { Table } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  handleUpdateProducts,
-  selectProducts,
-} from "../../features/productSlice";
 import "./Producto.css";
 import axios from "axios";
 
 const Producto = () => {
-  const products = useSelector(selectProducts);
-  const dispatch = useDispatch();
   const uri = "http://localhost:8080/products";
   const [rows, setRows] = useState([]);
   const [searchData, setSearchData] = useState("");
@@ -29,23 +22,12 @@ const Producto = () => {
   };
   useEffect(() => {
     fetchData();
-  }, [products]);
+  }, []);
   const handleNewProduct = async () => {
-    const { description, price, status } = newProduct;
     await axios
       .post(uri, newProduct)
-      .then(() => alert("producto creado"))
+      .then(({data}) => setRows(data))
       .catch((e) => console.error(e));
-    dispatch(
-      handleUpdateProducts([
-        {
-          description,
-          price,
-          status,
-        },
-        ...rows,
-      ])
-    );
     setNewProduct({
       description: "",
       price: "",
@@ -67,7 +49,6 @@ const Producto = () => {
       return row;
     });
     setRows(newData);
-    dispatch(handleUpdateProducts(newData));
     setIsEditing({ ...isEditing, state: false, id: "" });
     setNewProduct({
       description: "",

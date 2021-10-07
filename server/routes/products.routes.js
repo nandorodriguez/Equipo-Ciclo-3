@@ -12,7 +12,8 @@ router.get("/", async (req, res) => {
 });
 router.post("/", async (req, res) => {
   await Product.insertMany(req.body);
-  res.send("ya fue el post");
+  const productsNow = await Product.find();
+  res.json(productsNow);
 });
 router.delete("/", async (req, res) => {
   await Product.deleteOne({ _id: req.body });
