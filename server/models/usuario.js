@@ -18,7 +18,6 @@ const userSchema = new Schema({
     type: Boolean,
     required: true,
   },
-  
 });
 
 const Usuarios = mongoose.model("Usuario", userSchema);
