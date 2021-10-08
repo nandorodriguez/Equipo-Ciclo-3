@@ -48,7 +48,7 @@ const Usuarios = () => {
   const [searchData, setSearchData] = useState("");
   const handleUpdateUser = () => {
     const oldData = [...rows];
-    const newData = oldData.filter((row) => {
+    const newData = oldData.map((row) => {
       if (row.id === isEditing.id) {
         row.nombre = newUser.nombre;
         row.apellido = newUser.apellido;
@@ -83,7 +83,10 @@ const Usuarios = () => {
         estado: row.estado,
       });
     } else {
-      setRows(rows.filter((row) => row.id !== id));
+      //setRows(rows.filter((row) => row.id !== id));
+      await axios
+        .delete(uri, { data: { _id: id } })
+        .then(({ data }) => setRows(data));
     }
   };
   return (
@@ -132,6 +135,8 @@ const Usuarios = () => {
           </Button>
         )}
       </div>
+
+      {//tabla donde se listan los usuarios*/}
       <div className="usuario__right">
         <TextField
           style={{ width: "50%", marginBottom: "10px" }}
