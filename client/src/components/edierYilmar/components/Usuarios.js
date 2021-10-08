@@ -69,7 +69,7 @@ const Usuarios = () => {
   const handleOnChange = (e) => {
     setNewUser({ ...newUser, [e.target.name]: e.target.value });
   };
-  const handleRow = (id) => {
+  const handleRow = async(id) => {
     const option = window.confirm(
       "Ok: Editar registro \nCancel: Borrar registro"
     );
@@ -135,8 +135,6 @@ const Usuarios = () => {
           </Button>
         )}
       </div>
-
-      {//tabla donde se listan los usuarios*/}
       <div className="usuario__right">
         <TextField
           style={{ width: "50%", marginBottom: "10px" }}
