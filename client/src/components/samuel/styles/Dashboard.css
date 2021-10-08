@@ -1,22 +1,20 @@
 .dashboard {
   position: relative;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  height: 100vh;
   width: 100%;
-  position: relative;
-  background-image: linear-gradient(to right, #aaa,transparent),url("../images/banner.jpg");
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
 }
 .lista__links {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   display: flex;
   justify-content: space-evenly;
   margin: 0;
   padding: 0;
-  background: rgba(250, 250, 250, 0.4);
+  background: rgba(250, 250, 250, .5);
 }
 .lista__links li {
   list-style: none;

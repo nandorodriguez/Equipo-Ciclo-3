@@ -12,17 +12,10 @@ const Dashboard = () => {
   return (
     <Router>
       <div className="dashboard">
-        <div
-          style={{
-            position: "absolute",
-            width: "100%",
-            top: "0",
-            left: "0",
-          }}
-        >
+        <nav style={{ zIndex: "50" }}>
           <ul className="lista__links">
             <li>
-              <Link to="/home">Home</Link>
+              <Link to="/">Home</Link>
             </li>
             <li>
               <Link to="/ventas">Vendedor</Link>
@@ -34,7 +27,7 @@ const Dashboard = () => {
               <Link to="/usuarios">Usuarios</Link>
             </li>
           </ul>
-        </div>
+        </nav>
         <Switch>
           <Route path="/ventas">
             <VentasModulo />
@@ -45,7 +38,7 @@ const Dashboard = () => {
           <Route path="/usuarios">
             <Usuarios />
           </Route>
-          <Route path="/home">
+          <Route path="/">
             <Home />
           </Route>
         </Switch>

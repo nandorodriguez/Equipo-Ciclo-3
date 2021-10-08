@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { auth } from "../../../firebase";
 import { handleLogin } from "../../../features/userSlice";
-import Button from "@mui/material/Button";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
+import axios from "axios";
+import "../styles/Home.css";
+import Card from "./Card";
+import { Button } from "@mui/material";
 const Home = () => {
+  const uri = "http://localhost:8080/products";
+  const [rows, setRows] = useState([]);
   const dispatch = useDispatch();
   const history = useHistory();
   const handleSignOut = () => {
@@ -15,17 +20,31 @@ const Home = () => {
       })
       .catch((err) => console.log(err));
   };
+  const fetchData = async () => {
+    await axios
+      .get(uri)
+      .then(({ data }) => setRows(data))
+      .catch((e) => console.error(e));
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
-    <div>
+    <div className="home">
       <Button
-          variant="contained"
-          color="success"
-          onClick={() => {
-            handleSignOut();
-          }}
-        >
-          logout
-        </Button>
+        variant="contained"
+        color="success"
+        onClick={() => {
+          handleSignOut();
+        }}
+      >
+        logout
+      </Button>
+      <div className="cards">
+        {rows.map((row) => (
+            <Card key={row._id} data={row}/>
+        ))}
+      </div>
     </div>
   );
 };
