@@ -19,11 +19,14 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { selectUser } from "../../../features/userSlice";
 import { useSelector } from "react-redux";
+import { Fade } from "react-reveal";
 import "../styles/VentasModulo.css";
+import InputAdornment from "@mui/material/InputAdornment";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import Grid3x3Icon from "@mui/icons-material/Grid3x3";
 
 const VentasModulo = () => {
   const uri = "http://localhost:8080";
@@ -82,7 +85,7 @@ const VentasModulo = () => {
         idClient: newProduct.idClient,
         nameClient: newProduct.nameClient,
       })
-      .then(({data}) => setRows(data))
+      .then(({ data }) => setRows(data))
       .catch((e) => console.error(e));
     setSelectedIndex(null);
     setNameProduct("");
@@ -130,163 +133,184 @@ const VentasModulo = () => {
 
   return (
     <div className="ventasModulo">
-      <div className="ventasModulo__left">
-        <div>
-          <List
-            component="nav"
-            aria-label="Device settings"
-            sx={{ bgcolor: "background.paper" }}
-          >
-            <ListItem
-              button
-              id="lock-button"
-              aria-haspopup="listbox"
-              aria-controls="lock-menu"
-              aria-expanded={open ? "true" : undefined}
-              onClick={(e) => setAnchorEl(e.currentTarget)}
+      <Fade left>
+        <div className="ventasModulo__left">
+          <div>
+            <List
+              component="nav"
+              aria-label="Device settings"
+              sx={{ bgcolor: "background.paper" }}
             >
-              <ListItemText primary={nameProduct || "Select option"} />
-              <KeyboardArrowDownIcon />
-            </ListItem>
-          </List>
-          <Menu
-            id="lock-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={() => setAnchorEl(null)}
-            MenuListProps={{
-              "aria-labelledby": "lock-button",
-              role: "listbox",
-            }}
-          >
-            {options.map((option, index) => (
-              <MenuItem
-                key={option.description}
-                selected={index === selectedIndex}
-                onClick={() => handleMenuItemClick(index)}
+              <ListItem
+                style={{ borderBottom: "1px solid black" }}
+                button
+                id="lock-button"
+                aria-haspopup="listbox"
+                aria-controls="lock-menu"
+                aria-expanded={open ? "true" : undefined}
+                onClick={(e) => setAnchorEl(e.currentTarget)}
               >
-                {option.description}
-              </MenuItem>
-            ))}
-          </Menu>
-        </div>
-        <h5>Price: {valueUnit}</h5>
-        <TextField
-          name="quantity"
-          value={newProduct.quantity}
-          label="Quantity"
-          onChange={(e) => handleOnChange(e)}
-          variant="standard"
-        />
-        <TextField
-          name="idClient"
-          value={newProduct.idClient}
-          label="Client ID"
-          onChange={(e) => handleOnChange(e)}
-          variant="standard"
-        />
-        <TextField
-          name="nameClient"
-          value={newProduct.nameClient}
-          label="Client name"
-          onChange={(e) => handleOnChange(e)}
-          variant="standard"
-        />
-        {!isEditing.state ? (
-          <Button
-            variant="contained"
-            color="success"
-            onClick={() => handleNewProduct()}
-          >
-            Sell
-          </Button>
-        ) : (
-          <Button variant="contained" onClick={() => handleUpdateProduct()}>
-            Update
-          </Button>
-        )}
-      </div>
-      <div className="ventasModulo__right">
-        <TextField
-          style={{ width: "50%", marginBottom: "10px" }}
-          type="text"
-          label="Search"
-          onChange={(e) => setSearchData(e.target.value)}
-          variant="standard"
-        />
-        <TableContainer style={{overflowY:"scroll"}} component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell></TableCell>
-                <TableCell></TableCell>
-                <TableCell>
-                  <strong>ID</strong>
-                </TableCell>
-                <TableCell>
-                  <strong>Product</strong>
-                </TableCell>
-                <TableCell>
-                  <strong>Unit Value</strong>
-                </TableCell>
-                <TableCell>
-                  <strong>Quantity</strong>
-                </TableCell>
-                <TableCell>
-                  <strong>Total</strong>
-                </TableCell>
-                <TableCell>
-                  <strong>Date</strong>
-                </TableCell>
-                <TableCell>
-                  <strong>Client ID</strong>
-                </TableCell>
-                <TableCell>
-                  <strong>Client Name</strong>
-                </TableCell>
-                <TableCell>
-                  <strong>Seller Name</strong>
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows
-                .filter((row) =>
-                  JSON.stringify(row)
-                    .trim()
-                    .toLowerCase()
-                    .includes(searchData.trim().toLowerCase())
-                )
-                .map((row) => (
-                  <TableRow key={row._id}>
-                    <>
-                      <TableCell>
-                        <IconButton onClick={() => handleDeleteRow(row._id)}>
-                          <DeleteIcon />
-                        </IconButton>
-                      </TableCell>
+                <ListItemText primary={nameProduct || "Select option"} />
+                <KeyboardArrowDownIcon />
+              </ListItem>
+            </List>
+            <Menu
+              id="lock-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={() => setAnchorEl(null)}
+              MenuListProps={{
+                "aria-labelledby": "lock-button",
+                role: "listbox",
+              }}
+            >
+              {options.map((option, index) => (
+                <MenuItem
+                  key={option.description}
+                  selected={index === selectedIndex}
+                  onClick={() => handleMenuItemClick(index)}
+                >
+                  {option.description}
+                </MenuItem>
+              ))}
+            </Menu>
+          </div>
+          <h5>Price: {valueUnit ? `${valueUnit} pesos`: "0 pesos"}</h5>
 
-                      <TableCell>
-                        <IconButton onClick={() => handleEditRow(row._id)}>
-                          <EditIcon />
-                        </IconButton>
-                      </TableCell>
-                    </>
-                    <TableCell>{row._id}</TableCell>
-                    <TableCell>{row.nameProduct}</TableCell>
-                    <TableCell>{row.valueUnit}</TableCell>
-                    <TableCell>{row.quantity}</TableCell>
-                    <TableCell>{row.total}</TableCell>
-                    <TableCell>{row.date}</TableCell>
-                    <TableCell>{row.idClient}</TableCell>
-                    <TableCell>{row.nameClient}</TableCell>
-                    <TableCell>{row.nameSeller}</TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </div>
+          <TextField
+            type="number"
+            name="quantity"
+            value={newProduct.quantity}
+            label="Quantity"
+            onChange={(e) => handleOnChange(e)}
+            variant="standard"
+          />
+          <TextField
+            name="idClient"
+            onChange={(e) => handleOnChange(e)}
+            value={newProduct.idClient}
+            label="Client ID"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Grid3x3Icon />
+                </InputAdornment>
+              ),
+            }}
+            variant="standard"
+          />
+          <TextField
+            name="nameClient"
+            onChange={(e) => handleOnChange(e)}
+            value={newProduct.nameClient}
+            label="Client name"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <AccountCircle />
+                </InputAdornment>
+              ),
+            }}
+            variant="standard"
+          />
+          {!isEditing.state ? (
+            <Button
+              variant="contained"
+              color="success"
+              onClick={() => handleNewProduct()}
+            >
+              Sell
+            </Button>
+          ) : (
+            <Button variant="contained" onClick={() => handleUpdateProduct()}>
+              Update
+            </Button>
+          )}
+        </div>
+      </Fade>
+      <Fade right>
+        <div className="ventasModulo__right">
+          <TextField
+            style={{ width: "50%", marginBottom: "10px" }}
+            type="text"
+            label="Search"
+            onChange={(e) => setSearchData(e.target.value)}
+            variant="standard"
+          />
+          <TableContainer style={{ overflowY: "scroll" }} component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                  <TableCell>
+                    <strong>ID</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Product</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Unit Value</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Quantity</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Total</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Date</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Client ID</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Client Name</strong>
+                  </TableCell>
+                  <TableCell>
+                    <strong>Seller Name</strong>
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows
+                  .filter((row) =>
+                    JSON.stringify(row)
+                      .trim()
+                      .toLowerCase()
+                      .includes(searchData.trim().toLowerCase())
+                  )
+                  .map((row) => (
+                    <TableRow key={row._id}>
+                      <>
+                        <TableCell>
+                          <IconButton onClick={() => handleDeleteRow(row._id)}>
+                            <DeleteIcon />
+                          </IconButton>
+                        </TableCell>
+
+                        <TableCell>
+                          <IconButton onClick={() => handleEditRow(row._id)}>
+                            <EditIcon />
+                          </IconButton>
+                        </TableCell>
+                      </>
+                      <TableCell>{row._id}</TableCell>
+                      <TableCell>{row.nameProduct}</TableCell>
+                      <TableCell>{row.valueUnit}</TableCell>
+                      <TableCell>{row.quantity}</TableCell>
+                      <TableCell>{row.total}</TableCell>
+                      <TableCell>{row.date}</TableCell>
+                      <TableCell>{row.idClient}</TableCell>
+                      <TableCell>{row.nameClient}</TableCell>
+                      <TableCell>{row.nameSeller}</TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
+      </Fade>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
@@ -8,7 +8,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import {v4 as uuidv4} from 'uuid';
 import "../styles/Usuarios.css";
 import axios from "axios";
 
@@ -16,7 +15,7 @@ const Usuarios = () => {
   const uri = "http://localhost:8080/usuarios";
   const [rows, setRows] = useState([]);
   const [isEditing, setIsEditing] = useState({ state: false, id: "" });
-  
+
   // con esta parte del codigo traemos los datos que existan en la base de datos
   // para listarlos en la tabla
   const fetchData = async () => {
@@ -26,20 +25,18 @@ const Usuarios = () => {
     fetchData();
   }, []);
 
-
   // este codigo me sirve para guardar los datos en la base de datos
   const [newUser, setNewUser] = useState({
-    nombre: "", 
-    apellido: "",  
-    role: "",  
-    estado: "", 
+    nombre: "",
+    apellido: "",
+    role: "",
+    estado: "",
   });
-  const handleNewUser = () => {
-    await axios
-      .post(uri, newUser)
-      .then(({data}) => setRows(data))
+  const handleNewUser = async() => {
+    await axios.post(uri, newUser)
+      .then(({ data }) => setRows(data))
       .catch((e) => console.error(e));
-    setNewProduct({
+    setNewUser({
       nombre: "",
       apellido: "",
       role: "",
