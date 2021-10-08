@@ -19,7 +19,6 @@
 .ventasModulo__right{
     width: 70%;
     height: 80vh;
-    overflow-y: scroll;
     display: flex;
     flex-direction: column;
     align-items: center;

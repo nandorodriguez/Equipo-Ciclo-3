@@ -14,6 +14,7 @@ router.post("/", async (req, res) => {
   const usuarioNow = await Usuario.find();
   res.json(usuarioNow);
 });
+
 router.delete("/", async (req, res) => {
   await Usuario.deleteOne({ _id: req.body });
   const usuarioNow = await Usuario.find();

@@ -72,20 +72,18 @@ const VentasModulo = () => {
       nameClient: "",
     });
   };
-  const handleUpdateProduct = () => {
-    const oldData = [...rows];
-    const newData = oldData.filter((row) => {
-      if (row.id === isEditing.id) {
-        row.nameProduct = nameProduct;
-        row.valueUnit = valueUnit;
-        row.total = parseInt(valueUnit) * parseInt(newProduct.quantity);
-        row.quantity = newProduct.quantity;
-        row.idClient = newProduct.idClient;
-        row.nameClient = newProduct.nameClient;
-      }
-      return row;
-    });
-    setRows(newData);
+  const handleUpdateProduct = async () => {
+    await axios
+      .put(uri + `/ventas/${isEditing.id}`, {
+        nameProduct: nameProduct,
+        valueUnit: valueUnit,
+        total: parseInt(valueUnit) * parseInt(newProduct.quantity),
+        quantity: newProduct.quantity,
+        idClient: newProduct.idClient,
+        nameClient: newProduct.nameClient,
+      })
+      .then(({data}) => setRows(data))
+      .catch((e) => console.error(e));
     setSelectedIndex(null);
     setNameProduct("");
     setNewProduct({
@@ -216,7 +214,7 @@ const VentasModulo = () => {
           onChange={(e) => setSearchData(e.target.value)}
           variant="standard"
         />
-        <TableContainer component={Paper}>
+        <TableContainer style={{overflowY:"scroll"}} component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
               <TableRow>

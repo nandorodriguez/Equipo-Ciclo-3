@@ -15,8 +15,19 @@ router.post("/", async (req, res) => {
   const ventasNow = await Venta.find();
   res.json(ventasNow);
 });
+router.put("/:id", async (req, res) => {
+  const id = req.params.id;
+  await Venta.findOneAndUpdate(
+    { _id: id },
+    {
+      $set: { ...req.body },
+    }
+  );
+  const ventaNow = await Venta.find();
+  res.json(ventaNow);
+});
 router.delete("/", async (req, res) => {
-  await Venta.deleteOne({ _id: req.body });
+  await Venta.findOneAndDelete({ _id: req.body });
   const ventaNow = await Venta.find();
   res.json(ventaNow);
 });
