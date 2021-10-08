@@ -1,35 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import {
-  Button,
-  TextField,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
   Menu,
   MenuItem,
   List,
   ListItem,
   ListItemText,
-  IconButton,
 } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { selectUser } from "../../../features/userSlice";
 import { useSelector } from "react-redux";
 import { Fade } from "react-reveal";
 import "../styles/VentasModulo.css";
-import InputAdornment from "@mui/material/InputAdornment";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import Grid3x3Icon from "@mui/icons-material/Grid3x3";
-import SearchIcon from "@mui/icons-material/Search";
-import SellIcon from "@mui/icons-material/Sell";
-import AutorenewIcon from "@mui/icons-material/Autorenew";
+import VentasTabla from "./VentasTabla";
+import VentasModuloForm from "./VentasModuloForm";
 
 const VentasModulo = () => {
   const uri = "http://localhost:8080";
@@ -39,7 +23,6 @@ const VentasModulo = () => {
   const [options, setOptions] = useState([]);
   const [rows, setRows] = useState([]);
   const [isEditing, setIsEditing] = useState({ state: false, id: "" });
-  const [searchData, setSearchData] = useState("");
   const [nameProduct, setNameProduct] = useState("");
   const [valueUnit, setValueUnit] = useState(null);
   const [idProduct, setIdProduct] = useState(null);
@@ -49,10 +32,6 @@ const VentasModulo = () => {
     idClient: "",
     nameClient: "",
   });
-  const fetchData = async () => {
-    await axios.get(uri + "/products").then(({ data }) => setOptions(data));
-    await axios.get(uri + "/ventas").then(({ data }) => setRows(data));
-  };
   const handleNewProduct = async () => {
     const { quantity, idClient, nameClient } = newProduct;
     await axios
@@ -102,27 +81,6 @@ const VentasModulo = () => {
   const handleOnChange = (e) => {
     setNewProduct({ ...newProduct, [e.target.name]: e.target.value });
   };
-  const handleEditRow = async (id) => {
-    if (window.confirm("Are you sure you want to edit this purchase?")) {
-      const row = rows.find((row) => row._id === id);
-      setIsEditing({ ...isEditing, state: true, id: id });
-      setSelectedIndex(options.indexOf(row.id));
-      setNameProduct(row.nameProduct);
-      setValueUnit(row.valueUnit);
-      setNewProduct({
-        quantity: row.quantity,
-        idClient: row.idClient,
-        nameClient: row.nameClient,
-      });
-    }
-  };
-  const handleDeleteRow = async (id) => {
-    if (window.confirm("Are you sure you want to delete this purchase?")) {
-      await axios
-        .delete(uri + "/ventas", { data: { _id: id } })
-        .then(({ data }) => setRows(data));
-    }
-  };
   const handleMenuItemClick = (index) => {
     setSelectedIndex(index);
     setNameProduct(options[index].description);
@@ -130,10 +88,6 @@ const VentasModulo = () => {
     setIdProduct(options[index].idProduct);
     setAnchorEl(null);
   };
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   return (
     <div className="ventasModulo">
       <Fade left>
@@ -177,160 +131,30 @@ const VentasModulo = () => {
               ))}
             </Menu>
           </div>
-          <h5>
-            Price: {valueUnit ? `${valueUnit} pesos` : "0 pesos"}
-          </h5>
-          <TextField
-            type="number"
-            name="quantity"
-            value={newProduct.quantity}
-            label="Quantity"
-            onChange={(e) => handleOnChange(e)}
-            variant="standard"
+          <VentasModuloForm
+            handleNewProduct={handleNewProduct}
+            handleUpdateProduct={handleUpdateProduct}
+            handleOnChange={handleOnChange}
+            valueUnit={valueUnit}
+            newProduct={newProduct}
+            isEditing={isEditing}
           />
-          <TextField
-            name="idClient"
-            onChange={(e) => handleOnChange(e)}
-            value={newProduct.idClient}
-            label="Client ID"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Grid3x3Icon />
-                </InputAdornment>
-              ),
-            }}
-            variant="standard"
-          />
-          <TextField
-            name="nameClient"
-            onChange={(e) => handleOnChange(e)}
-            value={newProduct.nameClient}
-            label="Client name"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <AccountCircle />
-                </InputAdornment>
-              ),
-            }}
-            variant="standard"
-          />
-          {!isEditing.state ? (
-            <Button
-              variant="contained"
-              color="success"
-              startIcon={<SellIcon />}
-              onClick={() => handleNewProduct()}
-            >
-              Sell
-            </Button>
-          ) : (
-            <Button
-              color="secondary"
-              variant="contained"
-              startIcon={<AutorenewIcon />}
-              onClick={() => handleUpdateProduct()}
-            >
-              Update
-            </Button>
-          )}
         </div>
       </Fade>
       <Fade right>
         <div className="ventasModulo__right">
-          <TextField
-            style={{ width: "40%", marginBottom: "20px" }}
-            onChange={(e) => setSearchData(e.target.value)}
-            label="Search"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            }}
-            variant="standard"
+          <VentasTabla
+            rows={rows}
+            setRows={setRows}
+            isEditing={isEditing}
+            setIsEditing={setIsEditing}
+            setNewProduct={setNewProduct}
+            setSelectedIndex={setSelectedIndex}
+            options={options}
+            setOptions={setOptions}
+            setNameProduct={setNameProduct}
+            setValueUnit={setValueUnit}
           />
-          <TableContainer
-            style={{
-              overflowY: "scroll",
-              border: "1px solid black",
-            }}
-            component={Paper}
-          >
-            <Table stickyHeader>
-              <TableHead>
-                <TableRow>
-                  <TableCell align="center" colSpan={2}>
-                    <strong>Actions</strong>
-                  </TableCell>
-                  <TableCell>
-                    <strong>ID</strong>
-                  </TableCell>
-                  <TableCell>
-                    <strong>Product</strong>
-                  </TableCell>
-                  <TableCell>
-                    <strong>Unit Value</strong>
-                  </TableCell>
-                  <TableCell>
-                    <strong>Quantity</strong>
-                  </TableCell>
-                  <TableCell>
-                    <strong>Total</strong>
-                  </TableCell>
-                  <TableCell>
-                    <strong>Date</strong>
-                  </TableCell>
-                  <TableCell>
-                    <strong>Client ID</strong>
-                  </TableCell>
-                  <TableCell>
-                    <strong>Client Name</strong>
-                  </TableCell>
-                  <TableCell>
-                    <strong>Seller Name</strong>
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows
-                  .filter((row) =>
-                    JSON.stringify(row)
-                      .trim()
-                      .toLowerCase()
-                      .includes(searchData.trim().toLowerCase())
-                  )
-                  .map((row) => (
-                    <TableRow key={row._id} hover>
-                      <>
-                        <TableCell>
-                          <IconButton onClick={() => handleDeleteRow(row._id)}>
-                            <DeleteIcon />
-                          </IconButton>
-                        </TableCell>
-
-                        <TableCell>
-                          <IconButton onClick={() => handleEditRow(row._id)}>
-                            <EditIcon />
-                          </IconButton>
-                        </TableCell>
-                      </>
-                      <TableCell>{row._id}</TableCell>
-                      <TableCell>{row.nameProduct}</TableCell>
-                      <TableCell>{row.valueUnit}</TableCell>
-                      <TableCell>{row.quantity}</TableCell>
-                      <TableCell>{row.total}</TableCell>
-                      <TableCell>{row.date}</TableCell>
-                      <TableCell>{row.idClient}</TableCell>
-                      <TableCell>{row.nameClient}</TableCell>
-                      <TableCell>{row.nameSeller}</TableCell>
-                    </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
         </div>
       </Fade>
     </div>
