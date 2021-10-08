@@ -141,6 +141,9 @@ const VentasModulo = () => {
         <div className="ventasModulo__left">
           <div>
             <List component="div">
+              <h1 style={{ textAlign: "center", marginBottom: "40px" }}>
+                Sales
+              </h1>
               <ListItem
                 style={{ borderBottom: "1px solid black" }}
                 button
@@ -175,9 +178,9 @@ const VentasModulo = () => {
               ))}
             </Menu>
           </div>
-          <Typography variant="h6" component="div">
+          <h5>
             Price: {valueUnit ? `${valueUnit} pesos` : "0 pesos"}
-          </Typography>
+          </h5>
           <TextField
             type="number"
             name="quantity"
