@@ -9,13 +9,17 @@ import Home from "./Home";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 const Dashboard = () => {
-  
-  
   return (
     <Router>
       <div className="dashboard">
-
-        <div style={{ position: "absolute", width: "100%", top:"0",left:"0" }}>
+        <div
+          style={{
+            position: "absolute",
+            width: "100%",
+            top: "0",
+            left: "0",
+          }}
+        >
           <ul className="lista__links">
             <li>
               <Link to="/home">Home</Link>

@@ -16,6 +16,7 @@ import {
   ListItem,
   ListItemText,
   IconButton,
+  Typography,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -27,6 +28,9 @@ import "../styles/VentasModulo.css";
 import InputAdornment from "@mui/material/InputAdornment";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import Grid3x3Icon from "@mui/icons-material/Grid3x3";
+import SearchIcon from "@mui/icons-material/Search";
+import SellIcon from "@mui/icons-material/Sell";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
 
 const VentasModulo = () => {
   const uri = "http://localhost:8080";
@@ -136,11 +140,7 @@ const VentasModulo = () => {
       <Fade left>
         <div className="ventasModulo__left">
           <div>
-            <List
-              component="nav"
-              aria-label="Device settings"
-              sx={{ bgcolor: "background.paper" }}
-            >
+            <List component="div">
               <ListItem
                 style={{ borderBottom: "1px solid black" }}
                 button
@@ -175,8 +175,9 @@ const VentasModulo = () => {
               ))}
             </Menu>
           </div>
-          <h5>Price: {valueUnit ? `${valueUnit} pesos`: "0 pesos"}</h5>
-
+          <Typography variant="h6" component="div">
+            Price: {valueUnit ? `${valueUnit} pesos` : "0 pesos"}
+          </Typography>
           <TextField
             type="number"
             name="quantity"
@@ -217,12 +218,18 @@ const VentasModulo = () => {
             <Button
               variant="contained"
               color="success"
+              startIcon={<SellIcon />}
               onClick={() => handleNewProduct()}
             >
               Sell
             </Button>
           ) : (
-            <Button variant="contained" onClick={() => handleUpdateProduct()}>
+            <Button
+              color="secondary"
+              variant="contained"
+              startIcon={<AutorenewIcon />}
+              onClick={() => handleUpdateProduct()}
+            >
               Update
             </Button>
           )}
@@ -231,18 +238,31 @@ const VentasModulo = () => {
       <Fade right>
         <div className="ventasModulo__right">
           <TextField
-            style={{ width: "50%", marginBottom: "10px" }}
-            type="text"
-            label="Search"
+            style={{ width: "40%", marginBottom: "20px" }}
             onChange={(e) => setSearchData(e.target.value)}
+            label="Search"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
             variant="standard"
           />
-          <TableContainer style={{ overflowY: "scroll" }} component={Paper}>
-            <Table>
+          <TableContainer
+            style={{
+              overflowY: "scroll",
+              border: "1px solid black",
+            }}
+            component={Paper}
+          >
+            <Table stickyHeader>
               <TableHead>
                 <TableRow>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
+                  <TableCell align="center" colSpan={2}>
+                    <strong>Actions</strong>
+                  </TableCell>
                   <TableCell>
                     <strong>ID</strong>
                   </TableCell>
@@ -281,7 +301,7 @@ const VentasModulo = () => {
                       .includes(searchData.trim().toLowerCase())
                   )
                   .map((row) => (
-                    <TableRow key={row._id}>
+                    <TableRow key={row._id} hover>
                       <>
                         <TableCell>
                           <IconButton onClick={() => handleDeleteRow(row._id)}>
