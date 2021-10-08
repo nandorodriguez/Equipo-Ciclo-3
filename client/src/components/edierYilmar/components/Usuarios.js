@@ -10,37 +10,45 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import {v4 as uuidv4} from 'uuid';
 import "../styles/Usuarios.css";
+import axios from "axios";
 
 const Usuarios = () => {
+  const uri = "http://localhost:8080/usuarios";
   const [rows, setRows] = useState([]);
   const [isEditing, setIsEditing] = useState({ state: false, id: "" });
+  
+  // con esta parte del codigo traemos los datos que existan en la base de datos
+  // para listarlos en la tabla
+  const fetchData = async () => {
+    await axios.get(uri).then(({ data }) => setRows(data));
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+
+  // este codigo me sirve para guardar los datos en la base de datos
   const [newUser, setNewUser] = useState({
     nombre: "", 
     apellido: "",  
     role: "",  
     estado: "", 
   });
-  const [searchData, setSearchData] = useState("");
   const handleNewUser = () => {
-    const {  nombre, apellido, role, estado } =
-      newUser;
-    setRows([
-      {
-        id:uuidv4(),
-        nombre,
-        apellido,
-        role,
-        estado,
-      },
-      ...rows,
-    ]);
-    setNewUser({
+    await axios
+      .post(uri, newUser)
+      .then(({data}) => setRows(data))
+      .catch((e) => console.error(e));
+    setNewProduct({
       nombre: "",
       apellido: "",
       role: "",
       estado: "",
     });
   };
+
+  // para actualizar los datos
+  const [searchData, setSearchData] = useState("");
   const handleUpdateUser = () => {
     const oldData = [...rows];
     const newData = oldData.filter((row) => {
