@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  nombres: {
+  nombre: {
     type: String,
     required: true,
   },
-  apellidos: {
+  apellido: {
     type: String,
     required: true,
   },
@@ -15,7 +15,7 @@ const userSchema = new Schema({
     required: true,
   },
   estado: {
-    type: Boolean,
+    type: String,
     required: true,
   },
 });

@@ -10,7 +10,7 @@ router.get("/", async (req, res) => {
   res.json(user);
 });
 router.post("/", async (req, res) => {
-  await Usuarios.insertMany(req.body);
+  await Usuario.insertMany(req.body);
   const usuarioNow = await Usuario.find();
   res.json(usuarioNow);
 });

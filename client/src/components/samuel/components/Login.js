@@ -14,8 +14,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const handleSignIn = async () => {
-
-    await signInWithPopup(auth,provider).then(({ user }) => {
+    await signInWithPopup(auth, provider).then(({ user }) => {
       dispatch(
         handleLogin({
           id: user.uid,
@@ -29,6 +28,7 @@ const Login = () => {
   return (
     <div className="login">
       <Button
+        size="large"
         variant="contained"
         color="error"
         startIcon={<GoogleIcon />}
