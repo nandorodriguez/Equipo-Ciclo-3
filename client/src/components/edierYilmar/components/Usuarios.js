@@ -10,11 +10,18 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import "../styles/Usuarios.css";
 import axios from "axios";
+import { FormGroup,FormControlLabel } from '@mui/material';
+import { Fade } from "react-reveal";
 
 const Usuarios = () => {
   const uri = "http://localhost:8080/usuarios";
   const [rows, setRows] = useState([]);
   const [isEditing, setIsEditing] = useState({ state: false, id: "" });
+  const [nameUser, setNameUser] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [rol, setRol] = useState("");
+  const [stateUser, setStateUser] = useState("");
+  const [selectedIndex, setSelectedIndex] = useState("");
 
   // con esta parte del codigo traemos los datos que existan en la base de datos
   // para listarlos en la tabla
@@ -41,9 +48,14 @@ const Usuarios = () => {
 
   // para actualizar los datos
   const [searchData, setSearchData] = useState("");
-  const handleUpdateUser = () => {
-    const oldData = [...rows];
-    const newData = oldData.map((row) => {
+  const handleUpdateUser = async () => {
+    await axios.put(uri + `/usuarios/${isEditing.id}`, {
+        name:nameUser,
+        lastName:lastName,
+        role: rol,
+        stateUser:stateUser,
+      })
+    /*const newData = oldData.map((row) => {
       if (row.id === isEditing.id) {
         row.nombre = newUser.nombre;
         row.apellido = newUser.apellido;
@@ -51,13 +63,15 @@ const Usuarios = () => {
         row.estado = newUser.estado;
       }
       return row;
-    });
-    setRows(newData);
+    });*/
+    .then(({ data }) => setRows(data))
+    .catch((e) => console.error(e));
+  setSelectedIndex(null);
     setNewUser({
-      nombre: "",
-      apellido: "",
+      name: "",
+      lastName: "",
       role: "",
-      estado: "",
+      stateUser: "",
     });
     setIsEditing({ ...isEditing, state: false, id: "" });
   };
@@ -92,6 +106,7 @@ const Usuarios = () => {
   }, []);
   return (
     <div className="fondo_usuario">
+      <Fade bottom>
       <div className="usuario__left">
         <TextField
           name="nombre"
@@ -137,6 +152,8 @@ const Usuarios = () => {
           </Button>
         )}
       </div>
+      </Fade>
+      <Fade top>
       <div className="usuario__right">
         <TextField
           style={{ width: "50%", marginBottom: "10px" }}
@@ -176,13 +193,21 @@ const Usuarios = () => {
                     <TableCell>{row.nombre}</TableCell>
                     <TableCell>{row.apellido}</TableCell>
                     <TableCell>{row.role}</TableCell>
-                    <TableCell>{row.estado}</TableCell>
+                    <TableCell>
+                    <FormGroup>
+                      <FormControlLabel 
+                      control={<Switch defaultChecked />} 
+                      label={row.estado} 
+                      />
+                    </FormGroup>
+                      </TableCell>
                   </TableRow>
                 ))}
             </TableBody>
           </Table>
         </TableContainer>
       </div>
+      </Fade>
     </div>
   );
 };
