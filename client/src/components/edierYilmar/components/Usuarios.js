@@ -1,5 +1,5 @@
-import React, { useState,useEffect } from "react";
-import TextField from "@mui/material/TextField";
+import React, { useState, useEffect } from "react";
+import { TextField, Switch } from "@mui/material";
 import Button from "@mui/material/Button";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -32,8 +32,9 @@ const Usuarios = () => {
     role: "",
     estado: "",
   });
-  const handleNewUser = async() => {
-    await axios.post(uri, newUser)
+  const handleNewUser = async () => {
+    await axios
+      .post(uri, { ...newUser, estado: "inactivo" })
       .then(({ data }) => setRows(data))
       .catch((e) => console.error(e));
     setNewUser({
@@ -69,7 +70,7 @@ const Usuarios = () => {
   const handleOnChange = (e) => {
     setNewUser({ ...newUser, [e.target.name]: e.target.value });
   };
-  const handleRow = async(id) => {
+  const handleRow = async (id) => {
     const option = window.confirm(
       "Ok: Editar registro \nCancel: Borrar registro"
     );
@@ -113,13 +114,14 @@ const Usuarios = () => {
           onChange={(e) => handleOnChange(e)}
           variant="standard"
         />
-        <TextField
+        {/* <TextField
           name="estado"
           value={newUser.estado}
           onChange={(e) => handleOnChange(e)}
           label="Estado del Usuario"
           variant="standard"
-        />
+        /> */}
+        {/* <Switch {...label} /> */}
 
         {!isEditing.state ? (
           <Button variant="contained" onClick={() => handleNewUser()}>
