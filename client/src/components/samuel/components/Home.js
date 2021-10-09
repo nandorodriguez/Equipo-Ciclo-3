@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import "../styles/Home.css";
 import Card from "./Card";
+
 import { Button } from "@mui/material";
 const Home = () => {
   const uri = "http://localhost:8080/products";
@@ -38,11 +39,11 @@ const Home = () => {
       >
         logout
       </Button>
-      <div className="cards">
-        {rows.map((row) => (
-          <Card key={row._id} data={row} />
-        ))}
-      </div>
+        <div className="cards">
+          {rows.map((row) => (
+            <Card key={row._id} data={row} />
+          ))}
+        </div>
     </div>
   );
 };

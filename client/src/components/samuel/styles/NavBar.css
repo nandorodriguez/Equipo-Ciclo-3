@@ -29,7 +29,9 @@
   text-decoration: none;
 }
 .lista__links li:hover {
-  box-shadow: 0px 11px 31px -4px #000000;
+  box-shadow: 0px 15px 19px -10px #000000;
+
+  /* box-shadow: 0px 11px 31px -4px #000000; */
   cursor: pointer;
 }
 .lista__links li a:hover {

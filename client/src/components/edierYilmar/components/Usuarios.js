@@ -18,12 +18,6 @@ const Usuarios = () => {
 
   // con esta parte del codigo traemos los datos que existan en la base de datos
   // para listarlos en la tabla
-  const fetchData = async () => {
-    await axios.get(uri).then(({ data }) => setRows(data));
-  };
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   // este codigo me sirve para guardar los datos en la base de datos
   const [newUser, setNewUser] = useState({
@@ -74,7 +68,7 @@ const Usuarios = () => {
     const option = window.confirm(
       "Ok: Editar registro \nCancel: Borrar registro"
     );
-    const row = rows.find((row) => row.id === id);
+    const row = rows.find((row) => row._id === id);
     if (option) {
       setIsEditing({ ...isEditing, state: true, id: id });
       setNewUser({
@@ -90,6 +84,12 @@ const Usuarios = () => {
         .then(({ data }) => setRows(data));
     }
   };
+  const fetchData = async () => {
+    await axios.get(uri).then(({ data }) => setRows(data));
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <div className="fondo_usuario">
       <div className="usuario__left">
@@ -172,7 +172,7 @@ const Usuarios = () => {
                     .includes(searchData.trim().toLowerCase())
                 )
                 .map((row) => (
-                  <TableRow key={row.id | 0} onClick={() => handleRow(row.id)}>
+                  <TableRow key={row._id} onClick={() => handleRow(row._id)}>
                     <TableCell>{row.nombre}</TableCell>
                     <TableCell>{row.apellido}</TableCell>
                     <TableCell>{row.role}</TableCell>
