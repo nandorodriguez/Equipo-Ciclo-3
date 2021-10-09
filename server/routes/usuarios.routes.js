@@ -10,9 +10,20 @@ router.get("/", async (req, res) => {
   res.json(user);
 });
 router.post("/", async (req, res) => {
-  await Usuario.insertMany(req.body);
-  const usuarioNow = await Usuario.find();
-  res.json(usuarioNow);
+  const { nombre, apellido } = req.body;
+  const usuarioExiste = await Usuario.findOne({
+    nombre: nombre,
+    apellido: apellido,
+  });
+  if (usuarioExiste) {
+    res.json({
+      message: "El usuario ya existe",
+    });
+  } else {
+    await Usuario.insertMany(req.body);
+    const usuarioNow = await Usuario.find();
+    res.json(usuarioNow);
+  }
 });
 
 router.delete("/", async (req, res) => {
