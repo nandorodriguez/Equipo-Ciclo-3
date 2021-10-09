@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-
+import React from "react";
 import "../styles/Dashboard.css";
 import Producto from "../../fernandoZuky/Producto";
 import Usuarios from "../../edierYilmar/components/Usuarios";
@@ -7,7 +6,7 @@ import VentasModulo from "./VentasModulo";
 import Home from "./Home";
 import NavBar from "./NavBar";
 
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 const Dashboard = () => {
   return (

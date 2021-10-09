@@ -1,6 +1,7 @@
 .ventasModulo {
   background-image: linear-gradient(to top, #000, transparent),
     url("https://www.stanglwirt.com/media/animation/stangl-shop-stanglwirt-7-1.jpg");
+    
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,7 +19,7 @@
   width: 20%;
 }
 .ventasModulo__right {
-  background: linear-gradient(to top, #fff 93%, transparent);
+  background: linear-gradient(to top, #fff 89%, transparent);
   width: 70%;
   height: 80vh;
   display: flex;

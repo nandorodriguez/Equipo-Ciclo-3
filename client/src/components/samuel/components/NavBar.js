@@ -22,13 +22,13 @@ const NavBar = () => {
           <Link to="/">Home</Link>
         </li>
         <li>
-          <Link to="/ventas">Vendedor</Link>
+          <Link to="/ventas">Seller</Link>
         </li>
         <li>
-          <Link to="/admin">Administrador</Link>
+          <Link to="/admin">Admin</Link>
         </li>
         <li>
-          <Link to="/usuarios">Usuarios</Link>
+          <Link to="/usuarios">Users</Link>
         </li>
       </ul>
     </nav>
