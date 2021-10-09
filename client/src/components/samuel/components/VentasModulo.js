@@ -34,10 +34,7 @@ const VentasModulo = () => {
   });
   const handleNewProduct = async () => {
     const { quantity, idClient, nameClient } = newProduct;
-    await axios
-      .post(uri + "/ventas", {
-        nameProduct,
-        valueUnit,
+    await axios.post(uri + "/ventas", {nameProduct, valueUnit,
         quantity,
         idClient,
         nameClient,
