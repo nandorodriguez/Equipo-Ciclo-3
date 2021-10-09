@@ -20,6 +20,7 @@ const Producto = () => {
   const [newProduct, setNewProduct] = useState({
     idProduct: "",
     description: "",
+    img: "",
     price: "",
     status: "",
   });
@@ -28,12 +29,13 @@ const Producto = () => {
   }, [products]);
   console.log(rows);
   const handleNewProduct = () => {
-    const { idProduct, description, price, status } = newProduct;
+    const { idProduct, description, img, price, status } = newProduct;
     dispatch(
       handleUpdateProducts([
         {
           idProduct,
           description,
+          img,
           price,
           status,
         },
@@ -44,6 +46,7 @@ const Producto = () => {
       {
         idProduct,
         description,
+        img,
         price,
         status,
       },
@@ -52,6 +55,7 @@ const Producto = () => {
     setNewProduct({
       idProduct: "",
       description: "",
+      img: "",
       price: "",
       status: "",
     });
@@ -64,6 +68,7 @@ const Producto = () => {
         return {
           ...row,
           description: newProduct.description,
+          img: newProduct.img,
           price: newProduct.price,
           status: newProduct.status,
         };
@@ -76,9 +81,10 @@ const Producto = () => {
     setNewProduct({
       idProduct: "",
       description: "",
+      img: "",
       price: "",
       status: "",
-    })
+    });
   };
 
   const handleOnChange = (e) => {
@@ -95,6 +101,7 @@ const Producto = () => {
       setNewProduct({
         idProduct: row.idProduct,
         description: row.description,
+        img: row.img,
         price: row.price,
         status: row.status,
       });
@@ -104,22 +111,17 @@ const Producto = () => {
   };
 
   return (
-    <div>
-      <br></br>
-      <br></br>
-      <Container className="box-effect">
+    
+    <div className="box">
+      <Container className=" box-effect">
+      <br></br><br></br>
         <div className="row">
+       
           <h3 className="title-style text-center">PRODUCT REGISTRATION</h3>
         </div>
         <div>
           <Form className="row d-flex justify-content-center">
-            <FormControl
-              type="search"
-              placeholder="Search"
-              className="col-6"
-              aria-label="Search"
-              onChange={(e) => setSearchData(e.target.value)}
-            />
+
             {!isEditing.state && (
               <Form.Group
                 className="col-8 mb-4 mt-4"
@@ -128,7 +130,7 @@ const Producto = () => {
                 <Form.Control
                   value={newProduct.idProduct}
                   name="idProduct"
-                  placeholder="Id Product"
+                  placeholder="Product Id"
                   onChange={(e) => handleOnChange(e)}
                 />
               </Form.Group>
@@ -143,6 +145,18 @@ const Producto = () => {
                 value={newProduct.description}
                 name="description"
                 placeholder="Description"
+                onChange={(e) => handleOnChange(e)}
+              />
+            </Form.Group>
+            <Form.Group
+              className="col-8 mb-4 mt-4"
+              controlId="img"
+              onChange={(e) => handleOnChange(e)}
+            >
+              <Form.Control
+                value={newProduct.img}
+                name="img"
+                placeholder="Image URL"
                 onChange={(e) => handleOnChange(e)}
               />
             </Form.Group>
@@ -163,15 +177,21 @@ const Producto = () => {
               controlId="status"
               onChange={(e) => handleOnChange(e)}
             >
-              <Form.Control
+              <Form.Select
+                aria-label="Default select example"
                 value={newProduct.status}
                 name="status"
-                placeholder="Status Product"
+                placeholder="Product Status"
                 onChange={(e) => handleOnChange(e)}
-              />
+              >
+                <option hidden>Product Status</option>
+                <option value="Available">Available</option>
+                <option value="Not Available">Not Available</option>
+              </Form.Select>
             </Form.Group>
           </Form>
         </div>
+
         <div className="row text-center pb-4">
           <div className="col-12">
             {!isEditing.state ? (
@@ -195,18 +215,27 @@ const Producto = () => {
             )}
           </div>
         </div>
-
         {/* tabla de registro de productos  */}
-
         <div className="row d-flex justify-content-center">
+        <Form.Group
+           className="col-2 mb-2 mt-2"
+           >
+           <FormControl
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+              onChange={(e) => setSearchData(e.target.value)}
+            />
+            </Form.Group>
           <div className="col-8">
-            <Table striped bordered hover className="col-8 overflow-auto">
+            <Table striped bordered hover variant="light" className="col-8 overflow-auto">
               <thead>
                 <tr>
-                  <th>Id Product</th>
+                  <th>Product Id</th>
                   <th>Description</th>
+                  <th>Image URL</th>
                   <th>Price</th>
-                  <th>State Product</th>
+                  <th>Product Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -224,6 +253,7 @@ const Producto = () => {
                     >
                       <td>{row.idProduct}</td>
                       <td>{row.description}</td>
+                      <td>{row.img}</td>
                       <td>{row.price}</td>
                       <td>{row.status}</td>
                     </tr>

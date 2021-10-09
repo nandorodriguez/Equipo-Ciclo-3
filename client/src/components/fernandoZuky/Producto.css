@@ -7,3 +7,13 @@
 .style-button{
     padding-right: 100px;
 }
+.box{
+    background-image: linear-gradient(to right,#ddd,transparent),linear-gradient(to left,#ddd,transparent),url('https://images.unsplash.com/photo-1516762689617-e1cffcef479d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=711&q=80');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 100vh;
+    display: flex;
+    justify-content: space-evenly;
+   
+}
