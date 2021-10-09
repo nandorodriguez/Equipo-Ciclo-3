@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { auth } from "../../../firebase";
 import { handleLogin } from "../../../features/userSlice";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router";
 import axios from "axios";
 import "../styles/Home.css";
 import Card from "./Card";
@@ -11,7 +10,6 @@ const Home = () => {
   const uri = "http://localhost:8080/products";
   const [rows, setRows] = useState([]);
   const dispatch = useDispatch();
-  const history = useHistory();
   const handleSignOut = () => {
     auth
       .signOut()

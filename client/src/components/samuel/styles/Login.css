@@ -1,8 +1,7 @@
 .login {
-  /* background-image: url("https://media-cdn.tripadvisor.com/media/photo-s/1a/00/16/14/tienda-de-ropa-urbana.jpg"); */
   background-image: linear-gradient(to right, #000, transparent),
     url("https://media-cdn.tripadvisor.com/media/photo-s/1a/00/16/14/tienda-de-ropa-urbana.jpg");
-    background-position: center center;
+  background-position: center center;
   display: flex;
   justify-content: center;
   align-items: center;

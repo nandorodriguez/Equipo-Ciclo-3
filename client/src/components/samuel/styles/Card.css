@@ -1,11 +1,17 @@
 .card {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  align-items: center;
   flex: 1;
-  border: 1px solid red;
-  height: 600px;
-  width: 500px;
-  min-width: 400px;
+  border: 1px solid black;
+  height: 500px;
+  width: 400px;
+  min-width: 300px;
   margin: 5px;
+  opacity: 0.8;
+  transition: all 0.3s ease-in;
+  padding: 20px;
+}
+.card:hover {
+  opacity: 1;
 }

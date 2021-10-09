@@ -1,9 +1,14 @@
 .home {
+  background-image: linear-gradient(to top,#000, transparent),
+    url("https://www.stanglwirt.com/media/animation/stangl-shop-stanglwirt-7-1.jpg");
+  background-position: center center;
+  background-repeat: repeat;
+  background-size: cover;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-top: 100px;
+  padding-top: 100px;
 }
 .cards {
   display: flex;
