@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  TextField,
-  Table,
-  TableContainer,
-  Paper,
-} from "@mui/material";
+import { TextField, Table, TableContainer, Paper } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@mui/material/InputAdornment";
 import VentasTablaHeader from "./VentasTablaHeader";
@@ -56,7 +51,7 @@ const VentasTabla = ({
   return (
     <>
       <TextField
-        style={{ width: "40%", marginBottom: "20px" }}
+        style={{ width: "30%", margin: "20px" }}
         onChange={(e) => setSearchData(e.target.value)}
         label="Search"
         InputProps={{
@@ -71,7 +66,6 @@ const VentasTabla = ({
       <TableContainer
         style={{
           overflowY: "scroll",
-          border: "1px solid black",
         }}
         component={Paper}
       >
