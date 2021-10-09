@@ -125,7 +125,7 @@ const Usuarios = () => {
 
         {!isEditing.state ? (
           <Button variant="contained" onClick={() => handleNewUser()}>
-            Registrar Usuario
+            Upload User
           </Button>
         ) : (
           <Button
@@ -133,7 +133,7 @@ const Usuarios = () => {
             color="success"
             onClick={() => handleUpdateUser()}
           >
-            Actualizar datos
+            Update user
           </Button>
         )}
       </div>
@@ -150,16 +150,16 @@ const Usuarios = () => {
             <TableHead>
               <TableRow>
                 <TableCell>
-                  <strong>Nombre</strong>
+                  <strong>First Name</strong>
                 </TableCell>
                 <TableCell>
-                  <strong>Apellidos</strong>
+                  <strong>Last Name</strong>
                 </TableCell>
                 <TableCell>
                   <strong>Role</strong>
                 </TableCell>
                 <TableCell>
-                  <strong>Estado</strong>
+                  <strong>State</strong>
                 </TableCell>
               </TableRow>
             </TableHead>
