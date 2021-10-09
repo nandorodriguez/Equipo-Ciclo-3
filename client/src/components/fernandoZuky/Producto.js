@@ -14,6 +14,7 @@ const Producto = () => {
   const [isEditing, setIsEditing] = useState({ state: false, id: "" });
   const [newProduct, setNewProduct] = useState({
     description: "",
+    img: "",
     price: "",
     status: "",
   });
@@ -30,6 +31,7 @@ const Producto = () => {
       .catch((e) => console.error(e));
     setNewProduct({
       description: "",
+      img: "",
       price: "",
       status: "",
     });
@@ -42,6 +44,7 @@ const Producto = () => {
         return {
           ...row,
           description: newProduct.description,
+          img: newProduct.img,
           price: newProduct.price,
           status: newProduct.status,
         };
@@ -52,6 +55,7 @@ const Producto = () => {
     setIsEditing({ ...isEditing, state: false, id: "" });
     setNewProduct({
       description: "",
+      img: "",
       price: "",
       status: "",
     });
@@ -62,7 +66,7 @@ const Producto = () => {
   };
   const handleRow = async (idProduct) => {
     const option = window.confirm(
-      "Ok: Editar registro \nCancel: Borrar registro"
+      "OK: Editar registro \nCANCEL: Borrar registro"
     );
     const row = rows.find((row) => row._id === idProduct);
 
@@ -70,6 +74,7 @@ const Producto = () => {
       setIsEditing({ ...isEditing, state: true, id: idProduct });
       setNewProduct({
         description: row.description,
+        img: row.img,
         price: row.price,
         status: row.status,
       });
@@ -83,18 +88,12 @@ const Producto = () => {
   return (
     <div className="admin">
       <Container className="box-effect">
+      <br></br><br></br>
         <div className="row">
-          <h1 className="title-style text-center">product registration</h1>
+          <h3 className="title-style text-center">Product Registration</h3>
         </div>
         <div>
           <Form className="row d-flex justify-content-center">
-            <FormControl
-              type="search"
-              placeholder="Search"
-              className="col-6"
-              aria-label="Search"
-              onChange={(e) => setSearchData(e.target.value)}
-            />
             <Form.Group
               className="col-8 mb-4 mt-4"
               controlId="description"
@@ -107,6 +106,18 @@ const Producto = () => {
                 onChange={(e) => handleOnChange(e)}
               />
             </Form.Group>
+            <Form.Group
+              className="col-8 mb-4 mt-4"
+              controlId="img"
+              onChange={(e) => handleOnChange(e)}
+            >
+              <Form.Control
+                value={newProduct.img}
+                name="img"
+                placeholder="Image URL"
+                onChange={(e) => handleOnChange(e)}
+              />
+              </Form.Group>
             <Form.Group
               className="col-8 mb-4 mt-4"
               controlId="price"
@@ -124,12 +135,17 @@ const Producto = () => {
               controlId="status"
               onChange={(e) => handleOnChange(e)}
             >
-              <Form.Control
+              <Form.Select
+                aria-label="Default select example"
                 value={newProduct.status}
                 name="status"
-                placeholder="Status Product"
+                placeholder="Product Status"
                 onChange={(e) => handleOnChange(e)}
-              />
+              >
+                <option hidden>Product Status</option>
+                <option value="Available">Available</option>
+                <option value="Not Available">Not Available</option>
+              </Form.Select>
             </Form.Group>
           </Form>
         </div>
@@ -142,7 +158,7 @@ const Producto = () => {
                 type="submit"
                 onClick={() => handleNewProduct()}
               >
-                Upload Product
+                Save Product
               </Button>
             ) : (
               <Button
@@ -151,7 +167,7 @@ const Producto = () => {
                 color="success"
                 onClick={() => handleUpdateProduct()}
               >
-                Actualizar datos
+                Update Product
               </Button>
             )}
           </div>
@@ -160,14 +176,25 @@ const Producto = () => {
         {/* tabla de registro de productos  */}
 
         <div className="row d-flex justify-content-center">
+        <Form.Group
+           className="col-2 mb-4 mt-1"
+           >
+           <FormControl
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+              onChange={(e) => setSearchData(e.target.value)}
+            />
+            </Form.Group>
           <div className="col-8">
-            <Table striped bordered hover className="col-8 overflow-auto">
+            <Table striped bordered hover variant="light" className="col-8 overflow-auto">
+
               <thead>
                 <tr>
                   <th>Id Product</th>
                   <th>Description</th>
                   <th>Price</th>
-                  <th>State Product</th>
+                  <th>Product Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -182,6 +209,7 @@ const Producto = () => {
                     <tr key={row._id} onClick={() => handleRow(row._id)}>
                       <td>{row._id}</td>
                       <td>{row.description}</td>
+                      <td>{row.img}</td>
                       <td>{row.price}</td>
                       <td>{row.status}</td>
                     </tr>
