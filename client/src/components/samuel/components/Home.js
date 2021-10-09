@@ -40,7 +40,7 @@ const Home = () => {
       </Button>
       <div className="cards">
         {rows.map((row) => (
-            <Card key={row._id} data={row}/>
+          <Card key={row._id} data={row} />
         ))}
       </div>
     </div>

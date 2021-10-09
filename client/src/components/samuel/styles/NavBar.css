@@ -1,0 +1,40 @@
+* {
+  transition: all 0.3s ease-in;
+}
+.lista__links {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to bottom, #000, transparent);
+}
+.lista__links--black {
+  background: #000;
+}
+.lista__links li {
+  list-style: none;
+  width: 100%;
+  height: 50px;
+  cursor: pointer;
+}
+.lista__links li a {
+  color: #aaa;
+  font-size: 17px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+}
+.lista__links li:hover {
+  box-shadow: 0px 11px 31px -4px #000000;
+  cursor: pointer;
+}
+.lista__links li a:hover {
+  color: #fff;
+}
