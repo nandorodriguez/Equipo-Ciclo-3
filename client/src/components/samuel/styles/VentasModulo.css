@@ -18,7 +18,7 @@
   width: 20%;
 }
 .ventasModulo__right {
-  background: linear-gradient(to top, #fff 89%, transparent);
+  background: #fff;
   width: 70%;
   height: 80vh;
   display: flex;
