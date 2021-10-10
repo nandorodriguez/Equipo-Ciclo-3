@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
+  idGoogle: {
+    type: String,
+    required: true,
+  },
   nombre: {
     type: String,
     required: true,

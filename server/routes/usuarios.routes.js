@@ -10,10 +10,9 @@ router.get("/", async (req, res) => {
   res.json(user);
 });
 router.post("/", async (req, res) => {
-  const { nombre, apellido } = req.body;
+  const { idGoogle } = req.body;
   const usuarioExiste = await Usuario.findOne({
-    nombre: nombre,
-    apellido: apellido,
+    idGoogle: idGoogle,
   });
   if (usuarioExiste) {
     res.json({
@@ -25,7 +24,17 @@ router.post("/", async (req, res) => {
     res.json(usuarioNow);
   }
 });
-
+router.put("/:id", async (req, res) => {
+  const id = req.params.id;
+  await Usuario.findOneAndUpdate(
+    { _id: id },
+    {
+      $set: { ...req.body },
+    }
+  );
+  const usuarioNow = await Usuario.find();
+  res.json(usuarioNow);
+});
 router.delete("/", async (req, res) => {
   await Usuario.deleteOne({ _id: req.body });
   const usuarioNow = await Usuario.find();

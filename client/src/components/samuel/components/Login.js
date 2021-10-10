@@ -10,6 +10,7 @@ import "../styles/Login.css";
 const Login = () => {
   const dispatch = useDispatch();
   let usuario = {
+    idGoogle: "",
     nombre: "",
     apellido: "",
     role: "",
@@ -27,16 +28,15 @@ const Login = () => {
           })
         );
         usuario = {
+          idGoogle: user.uid,
           nombre: user.displayName.split(" ")[0],
           apellido: user.displayName.split(" ")[1],
           role: "user",
-          estado: "inactivo",
+          estado: "Inactive",
         };
       })
       .then(() => {
-        axios.post("http://localhost:8080/usuarios", usuario).then((res) => {
-          console.log(res);
-        });
+        axios.post("http://localhost:8080/usuarios", usuario);
       })
       .catch((err) => {
         console.log(err);
