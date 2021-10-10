@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { TextField, Switch } from "@mui/material";
-
+import { TextField } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
 import { Fade } from "react-reveal";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
-import "../styles/Usuarios.css";
 import UsuarioTablaHeader from "./UsuarioTablaHeader";
-import UsuarioTablaBody from "./UsuarioTablabody";
+import UsuarioTablaBody from "./UsuarioTablaBody";
 import UsuarioForm from "./UsuarioForm";
+import "../styles/Usuarios.css";
 
 const Usuarios = () => {
   const uri = "http://localhost:8080/usuarios";
@@ -26,7 +25,10 @@ const Usuarios = () => {
   const handleNewUser = async () => {
     const userExist = rows.find(
       (user) =>
-        user.nombre === newUser.nombre && user.apellido === newUser.apellido
+        user.nombre.trim().toLowerCase() ===
+          newUser.nombre.trim().toLowerCase() &&
+        user.apellido.trim().toLowerCase() ===
+          newUser.apellido.trim().toLowerCase()
     );
     if (userExist) {
       alert("The user has been already created");
@@ -52,8 +54,10 @@ const Usuarios = () => {
   const handleUpdateUser = async () => {
     const userToUpdateExist = rows.find(
       (user) =>
-        user.nombre === newUser.nombre &&
-        user.apellido === newUser.apellido &&
+        user.nombre.trim().toLowerCase() ===
+          newUser.nombre.trim().toLowerCase() &&
+        user.apellido.trim().toLowerCase() ===
+          newUser.apellido.trim().toLowerCase() &&
         user._id !== isEditing.id
     );
     if (userToUpdateExist) {
@@ -67,10 +71,10 @@ const Usuarios = () => {
     } else {
       await axios
         .put(uri + `/${isEditing.id}`, {
-          nombre: newUser.nombre,
-          apellido: newUser.apellido,
-          role: newUser.role,
-          estado: newUser.estado,
+          nombre: newUser.nombre.trim(),
+          apellido: newUser.apellido.trim(),
+          role: newUser.role.trim(),
+          estado: newUser.estado.trim(),
         })
         .then(({ data }) => setRows(data))
         .catch((e) => console.error(e));
@@ -103,21 +107,20 @@ const Usuarios = () => {
   };
   const handleEditRow = async (id) => {
     if (window.confirm("Are you sure you want to edit this purchase?")) {
-       const row = rows.find((row) => row._id === id);
-          setIsEditing({ ...isEditing, state: true, id: id });
-        setNewUser({
+      const row = rows.find((row) => row._id === id);
+      setIsEditing({ ...isEditing, state: true, id: id });
+      setNewUser({
         nombre: row.nombre,
         apellido: row.apellido,
         role: row.role,
         estado: row.estado,
       });
-      
     }
   };
   const handleDeleteRow = async (id) => {
     if (window.confirm("Are you sure you want to delete this purchase?")) {
       await axios
-        .delete(uri , { data: { _id: id } })
+        .delete(uri, { data: { _id: id } })
         .then(({ data }) => setRows(data));
     }
   };
@@ -130,10 +133,15 @@ const Usuarios = () => {
   return (
     <div className="fondo_usuario">
       <Fade bottom>
-      <div className="usuario__left">
-        <UsuarioForm isEditing={isEditing} newUser={newUser} handleOnChange={handleOnChange} handleNewUser={handleNewUser} handleUpdateUser={handleUpdateUser}/>
+        <div className="usuario__left">
+          <UsuarioForm
+            isEditing={isEditing}
+            newUser={newUser}
+            handleOnChange={handleOnChange}
+            handleNewUser={handleNewUser}
+            handleUpdateUser={handleUpdateUser}
+          />
         </div>
-        
       </Fade>
       <Fade top>
         <div className="usuario__right">
@@ -146,11 +154,15 @@ const Usuarios = () => {
           />
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
-              <UsuarioTablaHeader/>
-              <UsuarioTablaBody rows={rows} searchData={searchData} 
-              handleUpdateStateUser={handleUpdateStateUser}
-              handleDeleteRow={handleDeleteRow}
-              handleEditRow={handleEditRow}/> {/* */}
+              <UsuarioTablaHeader />
+              <UsuarioTablaBody
+                rows={rows}
+                searchData={searchData}
+                handleUpdateStateUser={handleUpdateStateUser}
+                handleDeleteRow={handleDeleteRow}
+                handleEditRow={handleEditRow}
+              />{" "}
+              {/* */}
             </Table>
           </TableContainer>
         </div>
