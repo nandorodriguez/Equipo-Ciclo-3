@@ -1,37 +1,60 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-
+import React from "react";
+import { Link, useHistory } from "react-router-dom";
+import { Button, Avatar } from "@mui/material";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../../features/userSlice";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { auth } from "../../../firebase";
+import { handleLogin } from "../../../features/userSlice";
+import { useDispatch } from "react-redux";
 import "../styles/NavBar.css";
 const NavBar = () => {
-  const [showNav, setShowNav] = useState(false);
-
-  const transitionNav = () => {
-    setShowNav(window.scrollY > 100 ? true : false);
+  const user = useSelector(selectUser);
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const handleSignOut = () => {
+    auth
+      .signOut()
+      .then(() => {
+        dispatch(handleLogin());
+      })
+      .catch((err) => console.log(err));
   };
-
-  useEffect(() => {
-    window.addEventListener("scroll", transitionNav);
-    return () => {
-      window.removeEventListener("scroll", transitionNav);
-    };
-  }, []);
   return (
-    <nav style={{ zIndex: "50" }}>
-      <ul className={`lista__links ${showNav && "lista__links--black"}`}>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/ventas">Seller</Link>
-        </li>
-        <li>
-          <Link to="/admin">Admin</Link>
-        </li>
-        <li>
-          <Link to="/usuarios">Users</Link>
-        </li>
-      </ul>
-    </nav>
+    <div className="nav">
+      <div style={{ width: "300px", justifyContent: "end" }}>
+        <ul className="nav__links">
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/ventas">Seller</Link>
+          </li>
+          <li>
+            <Link to="/admin">Admin</Link>
+          </li>
+          <li>
+            <Link to="/usuarios">Users</Link>
+          </li>
+        </ul>
+      </div>
+      <Avatar
+        alt={user.name}
+        src={user.photo}
+        style={{ cursor: "pointer" }}
+        onClick={() => history.push("/")}
+      />
+      <div style={{ width: "300px", textAlign: "right" }}>
+        <Button
+          color="error"
+          variant="outlined"
+          startIcon={<LogoutIcon />}
+          onClick={() => handleSignOut()}
+        >
+          log out
+        </Button>
+      </div>
+    </div>
   );
 };
 
