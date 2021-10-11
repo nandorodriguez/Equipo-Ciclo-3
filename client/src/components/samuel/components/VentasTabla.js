@@ -51,7 +51,7 @@ const VentasTabla = ({
   return (
     <>
       <TextField
-        style={{ width: "30%", margin: "40px" }}
+        style={{ width: "30%", margin: "20px" }}
         onChange={(e) => setSearchData(e.target.value)}
         label="Search"
         InputProps={{
