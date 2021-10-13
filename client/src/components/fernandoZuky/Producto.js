@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { Form, FormControl } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../features/userSlice";
-import "./Producto.css";
 import axios from "axios";
 import UsuarioSinPermisos from "../samuel/components/UsuarioSinPermisos";
+import "./Producto.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const Producto = () => {
   const user = useSelector(selectUser);

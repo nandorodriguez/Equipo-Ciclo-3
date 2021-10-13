@@ -5,7 +5,9 @@ const UsuarioTablaHeader = () => {
   return (
     <TableHead>
       <TableRow>
-        <TableCell colSpan={2} />
+        <TableCell colSpan={2} align="center">
+          <strong>Actions</strong>
+        </TableCell>
         <TableCell>
           <strong>First Name</strong>
         </TableCell>
