@@ -4,24 +4,37 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Form, FormControl } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import { Table } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../features/userSlice";
 import "./Producto.css";
 import axios from "axios";
 
 const Producto = () => {
-  const uri = "http://localhost:8080/products";
+  const user = useSelector(selectUser);
+  const uri = "http://localhost:8080";
   const [rows, setRows] = useState([]);
   const [searchData, setSearchData] = useState("");
   const [isEditing, setIsEditing] = useState({ state: false, id: "" });
+  const [userIsAdmin, setUserIsAdmin] = useState(false);
   const [newProduct, setNewProduct] = useState({
     description: "",
     img: "",
     price: "",
     status: "",
   });
+  const getUsers = async () => {
+    await axios.get(uri + "/usuarios").then(({ data }) => {
+      const userActual = data.find((userFind) => userFind.idGoogle === user.id);
+      if (userActual && userActual.role === "admin") {
+        setUserIsAdmin(true);
+      }
+    });
+  };
   const fetchData = async () => {
-    await axios.get(uri).then(({ data }) => setRows(data));
+    await axios.get(uri + "/products").then(({ data }) => setRows(data));
   };
   useEffect(() => {
+    getUsers();
     fetchData();
   }, []);
   const handleNewProduct = async () => {
@@ -84,7 +97,13 @@ const Producto = () => {
         .then(({ data }) => setRows(data));
     }
   };
-
+  if (!userIsAdmin) {
+    return (
+      <div style={{ height: "100vh", display: "flex", alignItems: "center" }}>
+        No tienes permisos para ver esta página
+      </div>
+    );
+  }
   return (
     <div className="admin">
       <Container className="box-effect">

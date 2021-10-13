@@ -7,52 +7,52 @@ import InputAdornment from "@mui/material/InputAdornment";
 import axios from "axios";
 
 const UsuarioForm = ({
-    newUser,
-    handleOnChange,
-    handleNewUser,
-    handleUpdateUser,
-    isEditing,
+  newUser,
+  handleOnChange,
+  handleNewUser,
+  handleUpdateUser,
+  isEditing,
 }) => {
-    return (
-        < >
-        <h1 style={{ textAlign: "center", marginBottom: "40px" }}>
-                Users
-        </h1>
-          <TextField
-            name="nombre"
-            value={newUser.nombre}
-            label="Nombre del Usuario"
-            onChange={(e) => handleOnChange(e)}
-            variant="standard"
-          />
-          <TextField
-            name="apellido"
-            value={newUser.apellido}
-            label="Apellidos"
-            onChange={(e) => handleOnChange(e)}
-            variant="standard"
-          />
-          <TextField
-            name="role"
-            value={newUser.role}
-            label="Role del Usuario"
-            onChange={(e) => handleOnChange(e)}
-            variant="standard"
-          />
-          {!isEditing.state ? (
-            <Button variant="contained" onClick={() => handleNewUser()}>
-              Create user
-            </Button>
-          ) : (
-            <Button
-              variant="contained"
-              color="success"
-              onClick={() => handleUpdateUser()}
-            >
-              Update user
-            </Button>
-          )}
-        </>
-    );
-}
+  return (
+    <>
+      <h1 style={{ textAlign: "center", marginBottom: "40px" }}>Users</h1>
+      <TextField
+        disabled={isEditing.state ? true : false}
+        name="nombre"
+        value={newUser.nombre}
+        label="Nombre del Usuario"
+        onChange={(e) => handleOnChange(e)}
+        variant="standard"
+      />
+      <TextField
+        disabled={isEditing.state ? true : false}
+        name="apellido"
+        value={newUser.apellido}
+        label="Apellidos"
+        onChange={(e) => handleOnChange(e)}
+        variant="standard"
+      />
+      <TextField
+        name="role"
+        value={newUser.role}
+        label="Role del Usuario"
+        onChange={(e) => handleOnChange(e)}
+        variant="standard"
+      />
+      {!isEditing.state ? (
+        <Button variant="contained" onClick={() => handleNewUser()}>
+          Create user
+        </Button>
+      ) : (
+        <Button
+          variant="contained"
+          color="success"
+          onClick={() => handleUpdateUser()}
+        >
+          Update user
+        </Button>
+      )}
+    </>
+  );
+};
 export default UsuarioForm;

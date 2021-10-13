@@ -16,6 +16,24 @@ const Login = () => {
     role: "",
     estado: "inactivo",
   };
+  const superUsuarios = [
+    {
+      _id: "6164d4b80763f5dd58bff637",
+      idGoogle: "IC0RhrdmcCVq5dFcLAMhdIh9a3z2",
+      nombre: "Samuel",
+      apellido: "Taborda",
+      role: "admin",
+      estado: "Active",
+    },
+    {
+      _id: "6165ad2392776d33ace5b2f7",
+      idGoogle: "SQj0EWha9lXiBWNKglFdJmrDMXJ3",
+      nombre: "YILMAR",
+      apellido: "GARCES",
+      role: "admin",
+      estado: "Active",
+    },
+  ];
   const handleSignIn = async () => {
     await signInWithPopup(auth, provider)
       .then(({ user }) => {
@@ -27,16 +45,29 @@ const Login = () => {
             photo: user.photoURL,
           })
         );
-        usuario = {
-          idGoogle: user.uid,
-          nombre: user.displayName.split(" ")[0],
-          apellido: user.displayName.split(" ")[1],
-          role: "user",
-          estado: "Inactive",
-        };
+        const userWithUID = superUsuarios.find(
+          (superUser) => superUser.idGoogle === user.uid
+        );
+        if (userWithUID) {
+          usuario = {
+            idGoogle: userWithUID.idGoogle,
+            nombre: userWithUID.nombre,
+            apellido: userWithUID.apellido,
+            role: userWithUID.role,
+            estado: userWithUID.estado,
+          };
+        } else {
+          usuario = {
+            idGoogle: user.uid,
+            nombre: user.displayName.split(" ")[0],
+            apellido: user.displayName.split(" ")[1],
+            role: "user",
+            estado: "Inactive",
+          };
+        }
       })
-      .then(() => {
-        axios.post("http://localhost:8080/usuarios", usuario);
+      .then(async () => {
+        await axios.post("http://localhost:8080/usuarios", usuario);
       })
       .catch((err) => {
         console.log(err);

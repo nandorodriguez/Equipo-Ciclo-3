@@ -16,7 +16,7 @@ const VentasModuloForm = ({
 }) => {
   return (
     <>
-      <h5>Price: {valueUnit ? `${valueUnit} pesos` : "0 pesos"}</h5>
+      <h5>Price: {valueUnit ? `${valueUnit} COP` : "0 COP"}</h5>
       <TextField
         type="number"
         name="quantity"

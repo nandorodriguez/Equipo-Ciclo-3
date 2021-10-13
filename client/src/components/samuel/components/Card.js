@@ -18,7 +18,7 @@ const Card = ({ data }) => {
         />
         <h1>{data.description}</h1>
         <h2>{data.status}</h2>
-        <strong>{data.price}</strong>
+        <strong>{data.price} COP</strong>
         <Button
           color="success"
           variant="contained"

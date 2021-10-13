@@ -9,13 +9,18 @@ import axios from "axios";
 import UsuarioTablaHeader from "./UsuarioTablaHeader";
 import UsuarioTablaBody from "./UsuarioTablaBody";
 import UsuarioForm from "./UsuarioForm";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../../features/userSlice";
 import "../styles/Usuarios.css";
 
 const Usuarios = () => {
+  const user = useSelector(selectUser);
   const uri = "http://localhost:8080/usuarios";
   const [searchData, setSearchData] = useState("");
   const [rows, setRows] = useState([]);
   const [isEditing, setIsEditing] = useState({ state: false, id: "" });
+  const [userIsAdmin, setUserIsAdmin] = useState(false);
+
   const [newUser, setNewUser] = useState({
     nombre: "",
     apellido: "",
@@ -127,9 +132,25 @@ const Usuarios = () => {
   const fetchData = async () => {
     await axios.get(uri).then(({ data }) => setRows(data));
   };
+  const getUsers = async () => {
+    await axios.get(uri).then(({ data }) => {
+      const userActual = data.find((userFind) => userFind.idGoogle === user.id);
+      if (userActual && userActual.role === "admin") {
+        setUserIsAdmin(true);
+      }
+    });
+  };
   useEffect(() => {
+    getUsers();
     fetchData();
   }, []);
+  if (!userIsAdmin) {
+    return (
+      <div style={{ height: "100vh", display: "flex", alignItems: "center" }}>
+        No tienes permisos para ver esta página
+      </div>
+    );
+  }
   return (
     <div className="fondo_usuario">
       <Fade bottom>
