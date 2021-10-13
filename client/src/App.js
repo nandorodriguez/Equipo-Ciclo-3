@@ -5,7 +5,7 @@ import Dashboard from "./components/samuel/components/Dashboard";
 import { handleLogin, selectUser } from "./features/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
 import { auth } from "./firebase";
 
 function App() {

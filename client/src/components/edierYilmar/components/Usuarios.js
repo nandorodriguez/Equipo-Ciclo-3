@@ -4,10 +4,10 @@ import Table from "@mui/material/Table";
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
 import { Fade } from "react-reveal";
-import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import UsuarioTablaHeader from "./UsuarioTablaHeader";
 import UsuarioTablaBody from "./UsuarioTablaBody";
+import UsuarioSinPermisos from "../../samuel/components/UsuarioSinPermisos";
 import UsuarioForm from "./UsuarioForm";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../../features/userSlice";
@@ -19,81 +19,30 @@ const Usuarios = () => {
   const [searchData, setSearchData] = useState("");
   const [rows, setRows] = useState([]);
   const [isEditing, setIsEditing] = useState({ state: false, id: "" });
-  const [userIsAdmin, setUserIsAdmin] = useState(false);
-
+  const [typeOfUser, setTypeOfUser] = useState({ type: "", status: "" });
   const [newUser, setNewUser] = useState({
     nombre: "",
     apellido: "",
     role: "",
     estado: "",
   });
-  const handleNewUser = async () => {
-    const userExist = rows.find(
-      (user) =>
-        user.nombre.trim().toLowerCase() ===
-          newUser.nombre.trim().toLowerCase() &&
-        user.apellido.trim().toLowerCase() ===
-          newUser.apellido.trim().toLowerCase()
-    );
-    if (userExist) {
-      alert("The user has been already created");
-      setNewUser({
-        nombre: "",
-        apellido: "",
-        role: "",
-        estado: "",
-      });
-    } else {
-      await axios
-        .post(uri, { ...newUser, estado: "Inactive", idGoogle: uuidv4() })
-        .then(({ data }) => setRows(data))
-        .catch((e) => console.error(e));
-      setNewUser({
-        nombre: "",
-        apellido: "",
-        role: "",
-        estado: "",
-      });
-    }
-  };
   const handleUpdateUser = async () => {
-    const userToUpdateExist = rows.find(
-      (user) =>
-        user.nombre.trim().toLowerCase() ===
-          newUser.nombre.trim().toLowerCase() &&
-        user.apellido.trim().toLowerCase() ===
-          newUser.apellido.trim().toLowerCase() &&
-        user._id !== isEditing.id
-    );
-    if (userToUpdateExist) {
-      alert("The user already exist");
-      setNewUser({
-        nombre: "",
-        apellido: "",
-        role: "",
-        estado: "",
-      });
-    } else {
-      await axios
-        .put(uri + `/${isEditing.id}`, {
-          nombre: newUser.nombre.trim(),
-          apellido: newUser.apellido.trim(),
-          role: newUser.role.trim(),
-          estado: newUser.estado.trim(),
-        })
-        .then(({ data }) => setRows(data))
-        .catch((e) => console.error(e));
-      setNewUser({
-        nombre: "",
-        apellido: "",
-        role: "",
-        estado: "",
-      });
-    }
+    await axios
+      .put(uri + `/${isEditing.id}`, {
+        nombre: newUser.nombre.trim(),
+        apellido: newUser.apellido.trim(),
+        role: newUser.role.trim(),
+        estado: newUser.estado.trim(),
+      })
+      .then(({ data }) => setRows(data))
+      .catch((e) => console.error(e));
+    setNewUser({
+      nombre: "",
+      apellido: "",
+      role: "",
+      estado: "",
+    });
     setIsEditing({ ...isEditing, state: false, id: "" });
-  };
-  const handleOnChange = (e) => {
-    setNewUser({ ...newUser, [e.target.name]: e.target.value });
   };
   const handleUpdateStateUser = async (id) => {
     let selectedUser = rows.find((row) => row._id === id);
@@ -135,8 +84,19 @@ const Usuarios = () => {
   const getUsers = async () => {
     await axios.get(uri).then(({ data }) => {
       const userActual = data.find((userFind) => userFind.idGoogle === user.id);
-      if (userActual && userActual.role === "admin") {
-        setUserIsAdmin(true);
+      if (userActual) {
+        if (userActual.role === "admin" && userActual.estado === "Active") {
+          setTypeOfUser({ ...typeOfUser, type: "admin", status: "active" });
+        }
+        if (userActual.role === "admin" && userActual.estado === "Inactive") {
+          setTypeOfUser({ ...typeOfUser, type: "admin", status: "inactive" });
+        }
+        if (userActual.role === "user" && userActual.estado === "Active") {
+          setTypeOfUser({ ...typeOfUser, type: "user", status: "active" });
+        }
+        if (userActual.role === "user" && userActual.estado === "Inactive") {
+          setTypeOfUser({ ...typeOfUser, type: "user", status: "inactive" });
+        }
       }
     });
   };
@@ -144,57 +104,49 @@ const Usuarios = () => {
     getUsers();
     fetchData();
   }, []);
-  if (!userIsAdmin) {
+
+  if (typeOfUser.type === "admin" && typeOfUser.status === "active") {
     return (
-      <div style={{ height: "100vh", display: "flex", alignItems: "center" }}>
-        No tienes permisos para ver esta página
+      <div className="fondo_usuario">
+        {isEditing.state && (
+          <Fade bottom>
+            <div className="usuario__left">
+              <UsuarioForm
+                isEditing={isEditing}
+                newUser={newUser}
+                handleUpdateUser={handleUpdateUser}
+                setNewUser={setNewUser}
+              />
+            </div>
+          </Fade>
+        )}
+        <Fade top>
+          <div className="usuario__right">
+            <TextField
+              style={{ width: "50%", marginBottom: "10px" }}
+              type="text"
+              label="Search"
+              onChange={(e) => setSearchData(e.target.value)}
+              variant="standard"
+            />
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <UsuarioTablaHeader />
+                <UsuarioTablaBody
+                  rows={rows}
+                  searchData={searchData}
+                  handleUpdateStateUser={handleUpdateStateUser}
+                  handleDeleteRow={handleDeleteRow}
+                  handleEditRow={handleEditRow}
+                />
+              </Table>
+            </TableContainer>
+          </div>
+        </Fade>
       </div>
     );
   }
-  return (
-    <div className="fondo_usuario">
-      {isEditing.state &&
-      <Fade bottom>
-        
-        <div className="usuario__left">
-          <UsuarioForm
-            isEditing={isEditing}
-            newUser={newUser}
-            handleOnChange={handleOnChange}
-            handleNewUser={handleNewUser}
-            handleUpdateUser={handleUpdateUser}
-            setNewUser={setNewUser}
-          />
-        </div>
-        
-      </Fade>
-      }
-      <Fade top>
-        <div className="usuario__right">
-          <TextField
-            style={{ width: "50%", marginBottom: "10px" }}
-            type="text"
-            label="Search"
-            onChange={(e) => setSearchData(e.target.value)}
-            variant="standard"
-          />
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-              <UsuarioTablaHeader />
-              <UsuarioTablaBody
-                rows={rows}
-                searchData={searchData}
-                handleUpdateStateUser={handleUpdateStateUser}
-                handleDeleteRow={handleDeleteRow}
-                handleEditRow={handleEditRow}
-              />{" "}
-              {/* */}
-            </Table>
-          </TableContainer>
-        </div>
-      </Fade>
-    </div>
-  );
+  return <UsuarioSinPermisos />;
 };
 
 export default Usuarios;

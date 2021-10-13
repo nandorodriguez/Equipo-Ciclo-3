@@ -13,7 +13,7 @@ const NavBar = () => {
   const uri = "http://localhost:8080/usuarios";
   const user = useSelector(selectUser);
   const history = useHistory();
-  const [userIsAdmin, setUserIsAdmin] = useState(false);
+  const [typeOfUser, setTypeOfUser] = useState({ type: "", status: "" });
   const dispatch = useDispatch();
   const handleSignOut = () => {
     auth
@@ -26,13 +26,19 @@ const NavBar = () => {
   const getUsers = async () => {
     await axios.get(uri).then(({ data }) => {
       const userActual = data.find((userFind) => userFind.idGoogle === user.id);
-      if (userActual && userActual.role === "admin") {
-        setUserIsAdmin(true);
+      if (userActual) {
+        if (userActual.role === "admin" && userActual.estado === "Active") {
+          setTypeOfUser({ ...typeOfUser, type: "admin", status: "active" });
+        }
+        if (userActual.role === "user" && userActual.estado === "Active") {
+          setTypeOfUser({ ...typeOfUser, type: "user", status: "active" });
+        }
+        if (userActual.role === "user" && userActual.estado === "Inactive") {
+          setTypeOfUser({ ...typeOfUser, type: "user", status: "inactive" });
+        }
       }
     });
   };
-  // console.log(users, user);
-
   useEffect(() => {
     getUsers();
   }, []);
@@ -43,10 +49,13 @@ const NavBar = () => {
           <li>
             <Link to="/">Home</Link>
           </li>
-          <li>
-            <Link to="/ventas">Seller</Link>
-          </li>
-          {userIsAdmin && (
+
+          {typeOfUser.status === "active" && (
+            <li>
+              <Link to="/ventas">Seller</Link>
+            </li>
+          )}
+          {typeOfUser.type === "admin" && typeOfUser.status === "active" && (
             <>
               <li>
                 <Link to="/admin">Admin</Link>
