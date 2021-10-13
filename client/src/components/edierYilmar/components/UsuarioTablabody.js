@@ -2,7 +2,7 @@ import React from "react";
 import { TableBody, TableCell, TableRow, IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Switch,FormControlLabel } from "@mui/material";
+import { Switch,FormControlLabel ,InputLabel,Select,MenuItem} from "@mui/material";
 const UsuarioTablaBody = ({
   rows,
   searchData,
@@ -37,7 +37,7 @@ const UsuarioTablaBody = ({
 
             <TableCell>{row.nombre}</TableCell>
             <TableCell>{row.apellido}</TableCell>
-            <TableCell>{row.role}</TableCell>
+            <TableCell> {row.role}   </TableCell>
             <TableCell>
               <FormControlLabel
                 control={

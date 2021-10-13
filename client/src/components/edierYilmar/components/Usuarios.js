@@ -153,7 +153,9 @@ const Usuarios = () => {
   }
   return (
     <div className="fondo_usuario">
+      {isEditing.state &&
       <Fade bottom>
+        
         <div className="usuario__left">
           <UsuarioForm
             isEditing={isEditing}
@@ -161,9 +163,12 @@ const Usuarios = () => {
             handleOnChange={handleOnChange}
             handleNewUser={handleNewUser}
             handleUpdateUser={handleUpdateUser}
+            setNewUser={setNewUser}
           />
         </div>
+        
       </Fade>
+      }
       <Fade top>
         <div className="usuario__right">
           <TextField
