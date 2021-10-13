@@ -26,7 +26,7 @@ const Login = () => {
       estado: "Active",
     },
     {
-      _id: "6165ad2392776d33ace5b2f7",
+      _id: "61672f53b5f342a9c1c2c793",
       idGoogle: "SQj0EWha9lXiBWNKglFdJmrDMXJ3",
       nombre: "YILMAR",
       apellido: "GARCES",
@@ -48,15 +48,15 @@ const Login = () => {
         const userWithUID = superUsuarios.find(
           (superUser) => superUser.idGoogle === user.uid
         );
-        if (userWithUID) {
-          usuario = {
-            idGoogle: userWithUID.idGoogle,
-            nombre: userWithUID.nombre,
-            apellido: userWithUID.apellido,
-            role: userWithUID.role,
-            estado: userWithUID.estado,
-          };
-        } else {
+        // if (userWithUID) {
+        //   usuario = {
+        //     idGoogle: userWithUID.idGoogle,
+        //     nombre: userWithUID.nombre,
+        //     apellido: userWithUID.apellido,
+        //     role: userWithUID.role,
+        //     estado: userWithUID.estado,
+        //   };
+        // } else {
           usuario = {
             idGoogle: user.uid,
             nombre: user.displayName.split(" ")[0],
@@ -64,7 +64,7 @@ const Login = () => {
             role: "user",
             estado: "Inactive",
           };
-        }
+        // }
       })
       .then(async () => {
         await axios.post("http://localhost:8080/usuarios", usuario);

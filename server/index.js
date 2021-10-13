@@ -6,7 +6,7 @@ const cors = require("cors");
 const products = require("./routes/products.routes");
 const ventas = require("./routes/ventas.routes");
 const usuarios = require("./routes/usuarios.routes");
-const axios = require("axios");
+
 require("./config/database");
 
 //Middlewares
