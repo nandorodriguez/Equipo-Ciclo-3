@@ -1,9 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { TextField, Table, TableContainer, Paper } from "@mui/material";
+import {
+  TextField,
+  Table,
+  TableContainer,
+  Paper,
+  Button,
+  Modal,
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@mui/material/InputAdornment";
 import VentasTablaHeader from "./VentasTablaHeader";
 import VentasTablaBody from "./VentasTablaBody";
+import BarChartIcon from "@mui/icons-material/BarChart";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from "recharts";
 import axios from "axios";
 
 const VentasTabla = ({
@@ -19,6 +36,7 @@ const VentasTabla = ({
   setValueUnit,
 }) => {
   const [searchData, setSearchData] = useState("");
+  const [open, setOpen] = useState(false);
   const uri = "http://localhost:8080";
   const handleEditRow = async (id) => {
     if (window.confirm("Are you sure you want to edit this purchase?")) {
@@ -50,19 +68,67 @@ const VentasTabla = ({
   }, []);
   return (
     <>
-      <TextField
-        style={{ width: "30%", margin: "20px" }}
-        onChange={(e) => setSearchData(e.target.value)}
-        label="Search"
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchIcon />
-            </InputAdornment>
-          ),
+      <div
+        style={{
+          display: "flex",
+          margin: "15px",
+          width: "90%",
+          justifyContent: "space-between",
         }}
-        variant="standard"
-      />
+      >
+        <TextField
+          style={{ marginRight: "10px" }}
+          onChange={(e) => setSearchData(e.target.value)}
+          label="Search"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+          variant="standard"
+        />
+        <Button
+          variant="outlined"
+          color="secondary"
+          onClick={() => setOpen(true)}
+          startIcon={<BarChartIcon />}
+        >
+          Get chart
+        </Button>
+        <Modal
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+          open={open}
+          onClose={() => setOpen(false)}
+        >
+          <div
+            style={{
+              padding: "20px",
+              backgroundColor: "#fff",
+              width: "50%",
+              height: "70%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <LineChart width={900} height={600} data={rows}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Line type="monotone" dataKey="total" stroke="#f00" />
+            </LineChart>
+          </div>
+        </Modal>
+      </div>
       <TableContainer
         style={{
           overflowY: "scroll",

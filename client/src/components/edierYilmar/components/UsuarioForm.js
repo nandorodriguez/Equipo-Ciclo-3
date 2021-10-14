@@ -1,58 +1,44 @@
-import React, { useState, useEffect } from "react";
-import { TextField, Table, TableContainer, Paper } from "@mui/material";
+import React from "react";
+import { TextField, FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import Button from "@mui/material/Button";
 import "../styles/Usuarios.css";
-import SearchIcon from "@mui/icons-material/Search";
-import InputAdornment from "@mui/material/InputAdornment";
-import axios from "axios";
-
 const UsuarioForm = ({
-    newUser,
-    handleOnChange,
-    handleNewUser,
-    handleUpdateUser,
-    isEditing,
+  newUser,
+  handleUpdateUser,
+  setNewUser,
 }) => {
-    return (
-        < >
-        <h1 style={{ textAlign: "center", marginBottom: "40px" }}>
-                Users
-        </h1>
-          <TextField
-            name="nombre"
-            value={newUser.nombre}
-            label="Nombre del Usuario"
-            onChange={(e) => handleOnChange(e)}
-            variant="standard"
-          />
-          <TextField
-            name="apellido"
-            value={newUser.apellido}
-            label="Apellidos"
-            onChange={(e) => handleOnChange(e)}
-            variant="standard"
-          />
-          <TextField
-            name="role"
-            value={newUser.role}
-            label="Role del Usuario"
-            onChange={(e) => handleOnChange(e)}
-            variant="standard"
-          />
-          {!isEditing.state ? (
-            <Button variant="contained" onClick={() => handleNewUser()}>
-              Create user
-            </Button>
-          ) : (
-            <Button
-              variant="contained"
-              color="success"
-              onClick={() => handleUpdateUser()}
-            >
-              Update user
-            </Button>
-          )}
-        </>
-    );
-}
+  return (
+    <>
+      <h1 style={{ textAlign: "center", marginBottom: "40px" }}>Users</h1>
+      <TextField
+        disabled="true"
+        value={newUser.nombre}
+        label="Nombre del Usuario"
+        variant="standard"
+      />
+      <TextField
+        disabled="true"
+        value={newUser.apellido}
+        label="Apellidos"
+        variant="standard"
+      />
+      <RadioGroup
+        aria-label="position"
+        value={newUser.role}
+        onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
+      >
+        <FormControlLabel value="admin" control={<Radio />} label="Admin" />
+        <FormControlLabel value="user" control={<Radio />} label="User" />
+      </RadioGroup>
+
+      <Button
+        variant="contained"
+        color="success"
+        onClick={() => handleUpdateUser()}
+      >
+        Update user
+      </Button>
+    </>
+  );
+};
 export default UsuarioForm;

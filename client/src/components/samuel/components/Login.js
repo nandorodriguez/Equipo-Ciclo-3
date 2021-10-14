@@ -14,7 +14,7 @@ const Login = () => {
     nombre: "",
     apellido: "",
     role: "",
-    estado: "inactivo",
+    estado: "",
   };
   const handleSignIn = async () => {
     await signInWithPopup(auth, provider)
@@ -35,8 +35,8 @@ const Login = () => {
           estado: "Inactive",
         };
       })
-      .then(() => {
-        axios.post("http://localhost:8080/usuarios", usuario);
+      .then(async () => {
+        await axios.post("http://localhost:8080/usuarios", usuario);
       })
       .catch((err) => {
         console.log(err);

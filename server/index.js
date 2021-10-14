@@ -6,6 +6,7 @@ const cors = require("cors");
 const products = require("./routes/products.routes");
 const ventas = require("./routes/ventas.routes");
 const usuarios = require("./routes/usuarios.routes");
+
 require("./config/database");
 
 //Middlewares
@@ -19,8 +20,8 @@ app.use("/ventas", ventas);
 app.use("/usuarios", usuarios);
 
 //HTTP request
-app.get("/", (req, res) => {
-  res.send("estamos en la pagina principal");
+app.get("/", async (req, res) => {
+  res.send("Hello World");
 });
 
 //Escuchando al servidor
