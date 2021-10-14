@@ -51,7 +51,7 @@ const Producto = () => {
   }, []);
   const handleNewProduct = async () => {
     await axios
-      .post(uri, newProduct)
+      .post(uri + "/products", newProduct)
       .then(({ data }) => setRows(data))
       .catch((e) => console.error(e));
     setNewProduct({
@@ -62,17 +62,16 @@ const Producto = () => {
     });
   };
   const handleUpdateProduct = async () => {
-    await axios.put(uri+ `/products/${isEditing.id}`,
-    {
-      description: newProduct.description,
-      img: newProduct.img,
-      price: newProduct.price,
-      status: newProduct.state,
-
+    await axios
+      .put(uri + `/products/${isEditing.id}`, {
+        description: newProduct.description,
+        img: newProduct.img,
+        price: newProduct.price,
+        status: newProduct.status,
       })
-      .then(({data})=> setRows(data))
-      .catch((e)=>console.log(e));
-  
+      .then(({ data }) => setRows(data))
+      .catch((e) => console.log(e));
+
     setIsEditing({ ...isEditing, state: false, id: "" });
     setNewProduct({
       description: "",
