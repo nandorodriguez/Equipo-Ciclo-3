@@ -60,7 +60,7 @@ const Usuarios = () => {
       .catch((e) => console.error(e));
   };
   const handleEditRow = async (id) => {
-    if (window.confirm("Are you sure you want to edit this purchase?")) {
+    if (window.confirm("Are you sure you want to edit this User?")) {
       const row = rows.find((row) => row._id === id);
       setIsEditing({ ...isEditing, state: true, id: id });
       setNewUser({
@@ -72,7 +72,7 @@ const Usuarios = () => {
     }
   };
   const handleDeleteRow = async (id) => {
-    if (window.confirm("Are you sure you want to delete this purchase?")) {
+    if (window.confirm("Are you sure you want to delete this User?")) {
       await axios
         .delete(uri, { data: { _id: id } })
         .then(({ data }) => setRows(data));
