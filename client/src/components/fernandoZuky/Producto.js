@@ -61,21 +61,18 @@ const Producto = () => {
       status: "",
     });
   };
-  const handleUpdateProduct = () => {
-    const oldData = [...rows];
-    let newData = oldData.map((row) => {
-      if (row.idProduct === isEditing.id) {
-        return {
-          ...row,
-          description: newProduct.description,
-          img: newProduct.img,
-          price: newProduct.price,
-          status: newProduct.status,
-        };
-      }
-      return row;
-    });
-    setRows(newData);
+  const handleUpdateProduct = async () => {
+    await axios.put(uri+ `/products/${isEditing.id}`,
+    {
+      description: newProduct.description,
+      img: newProduct.img,
+      price: newProduct.price,
+      status: newProduct.state,
+
+      })
+      .then(({data})=> setRows(data))
+      .catch((e)=>console.log(e));
+  
     setIsEditing({ ...isEditing, state: false, id: "" });
     setNewProduct({
       description: "",
