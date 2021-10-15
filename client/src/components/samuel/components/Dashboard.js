@@ -5,13 +5,9 @@ import Usuarios from "../../edierYilmar/components/Usuarios";
 import VentasModulo from "./VentasModulo";
 import Home from "./Home";
 import NavBar from "./NavBar";
-
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../../features/userSlice";
 
 const Dashboard = () => {
-
   return (
     <Router>
       <div className="dashboard">
@@ -20,10 +16,9 @@ const Dashboard = () => {
           <Route path="/ventas">
             <VentasModulo />
           </Route>
-          {
-            <Route path="/admin">
+          <Route path="/admin">
             <Producto />
-          </Route>}
+          </Route>
           <Route path="/usuarios">
             <Usuarios />
           </Route>

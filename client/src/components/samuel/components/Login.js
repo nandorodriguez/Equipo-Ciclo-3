@@ -18,11 +18,11 @@ import { signInWithPopup } from "firebase/auth";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 
-export default function SignIn() {
+const Login = () => {
   const uri = "http://localhost:8080/usuarios";
   const dispatch = useDispatch();
   const [users, setUsers] = useState([]);
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
   const [userRegistered, setUserRegistered] = useState({
     email: "",
     password: "",
@@ -304,4 +304,6 @@ export default function SignIn() {
       </Box>
     </Container>
   );
-}
+};
+
+export default Login;
