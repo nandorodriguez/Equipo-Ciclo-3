@@ -33,15 +33,7 @@ const Login = () => {
     email: "",
     password: "",
   });
-  let usuario = {
-    idGoogle: "",
-    nombre: "",
-    apellido: "",
-    email: "",
-    password: "",
-    role: "",
-    estado: "",
-  };
+
   const handleSignIn = async () => {
     const userExist = users.find(
       (user) =>
@@ -49,6 +41,15 @@ const Login = () => {
         user.password === userRegistered.password
     );
     if (userExist) {
+      let usuario = {
+        idGoogle: "",
+        nombre: "",
+        apellido: "",
+        email: "",
+        password: "",
+        role: "",
+        estado: "",
+      };
       usuario = {
         idGoogle: userExist.idGoogle,
         nombre: userExist.nombre,
