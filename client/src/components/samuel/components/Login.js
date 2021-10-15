@@ -101,6 +101,15 @@ const Login = () => {
   };
 
   const handleSignInWithGoogle = async () => {
+    let userWithGoogle = {
+      idGoogle: "",
+      nombre: "",
+      apellido: "",
+      email: "",
+      password: "",
+      role: "",
+      estado: "",
+    };
     await signInWithPopup(auth, provider)
       .then(({ user }) => {
         dispatch(
@@ -111,7 +120,7 @@ const Login = () => {
             photo: user.photoURL,
           })
         );
-        usuario = {
+        userWithGoogle = {
           idGoogle: user.uid,
           nombre: user.displayName.split(" ")[0],
           apellido: user.displayName.split(" ")[1],
@@ -121,10 +130,10 @@ const Login = () => {
         };
       })
       .then(async () => {
-        await axios.post("http://localhost:8080/usuarios", usuario);
+        await axios.post("http://localhost:8080/usuarios", userWithGoogle);
       })
       .finally(() => {
-        usuario = {
+        userWithGoogle = {
           idGoogle: "",
           nombre: "",
           apellido: "",
