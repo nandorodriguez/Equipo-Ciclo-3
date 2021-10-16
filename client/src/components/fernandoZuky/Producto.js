@@ -99,7 +99,7 @@ const Producto = () => {
       });
     } else {
       await axios
-        .delete(uri, { data: { _id: idProduct } })
+        .delete(uri+ `/products/`, { data: { _id: idProduct } })
         .then(({ data }) => setRows(data));
     }
   };
